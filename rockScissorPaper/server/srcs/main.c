@@ -1,122 +1,94 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <errno.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <unistd.h>
 #include <arpa/inet.h>
 
-#include "incs/define.h"
-
-#define LISTEN_BACKLOG 5
+#define SERVER_PORT 8080
 #define MAX_BUF 256
 
-pid_t pid;
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[MAX_BUF];
 
-int main(int argc, char **argv)
-{
-	int ret;
-	int len;
-	int sfd_server, sfd_client;
-	struct sockaddr_in addr_server;
-	struct sockaddr_in addr_client;
-	socklen_t addr_client_len;
-	char buf[MAX_BUF];
-	int optval = 1;
+    // 1. 소켓 생성
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == -1) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
 
-	struct timeval tv;
-	fd_set rfd, tfd;
-	int fd;
+    // 2. 서버 주소 설정
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(SERVER_PORT);
 
-	if(argc != 1) {
-		printf("usage: %s\n", argv[0]);
-		return EXIT_FAILURE;
-	}
-	printf("[%d] running %s\n", pid = getpid(), argv[0]);
+    // 3. 바인딩
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
+        perror("Bind failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
 
-	sfd_server = socket(AF_INET, SOCK_STREAM, 0);
-	if(sfd_server == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+    // 4. 클라이언트 연결 대기
+    if (listen(server_fd, 5) == -1) {
+        perror("Listen failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
 
-	/* to prevent "Address already in use" error */
-	ret = setsockopt(sfd_server, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+    printf("Server listening on port %d...\n", SERVER_PORT);
 
-	memset(&addr_server, 0, sizeof(addr_server));
-	addr_server.sin_family = AF_INET;
-	addr_server.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr_server.sin_port = htons(SERVER_PORT);
-	ret = bind(sfd_server, (struct sockaddr *)&addr_server, sizeof(addr_server));
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+    // 5. 클라이언트 연결 수락
+    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+    if (client_fd == -1) {
+        perror("Accept failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    printf("Client connected!\n");
 
-	ret = listen(sfd_server, LISTEN_BACKLOG);
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+    // 6. 클라이언트에서 메시지 수신
+    int len = read(client_fd, buffer, MAX_BUF - 1);
+    if (len > 0) {
+        buffer[len] = '\0';
+        printf("Received from client: %s\n", buffer);
 
-	FD_ZERO(&rfd);
-	FD_SET(sfd_server, &rfd);
+        // "connect" 메시지 확인 후 "OK" 응답 전송
+        if (strcmp(buffer, "connect") == 0) {
+            write(client_fd, "OK", strlen("OK"));
+            printf("Sent: OK\n");
 
-	for(;;) {
-		tv.tv_sec = 3;
-		tv.tv_usec = 0;
-		tfd = rfd;
-		ret = select(FD_SETSIZE, &tfd, NULL, NULL, &tv);
-		if(ret == -1) {
-			printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-			return EXIT_FAILURE;
-		}
-		else if(ret == 0) {
-			continue;
-		}
+            // 클라이언트가 "Ready"를 보낼 때까지 기다림
+            len = read(client_fd, buffer, MAX_BUF - 1);
+            if (len > 0) {
+                buffer[len] = '\0';
+                printf("Received from client: %s\n", buffer);
 
-		for(fd = 0; fd < FD_SETSIZE; fd++) {
-			if(!FD_ISSET(fd, &tfd)) continue;
-			if(fd == sfd_server) {
-				addr_client_len = sizeof(addr_client);
-				sfd_client = accept(sfd_server, (struct sockaddr *)&addr_client, &addr_client_len);
+                // 클라이언트가 "Ready"를 보냈는지 확인
+                if (strcmp(buffer, "Ready") == 0) {
+                    printf("Client is Ready!\n");
+                }
+            }
+        }
+    }
 
-				if(sfd_client == -1) {
-					printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-					return EXIT_FAILURE;
-				}
-				FD_SET(sfd_client, &rfd);
-				printf("[%d][fd%d] connected\n", pid, sfd_client);
-			}
-			else {
-				len = read(fd, buf, MAX_BUF-1);
-				if(len <= 0) {
-					close(fd);
-					FD_CLR(fd, &rfd);
-					printf("[%d][fd%d] closed\n", pid, fd);
-				}
-				else {
-					buf[len] = 0;
-					printf("[%d][fd%d] received: %s\n", pid, fd, buf);
+    // 7. 클라이언트의 원래 메시지 수신
+    len = read(client_fd, buffer, MAX_BUF - 1);
+    if (len > 0) {
+        buffer[len] = '\0';
+        printf("Client Message: %s\n", buffer);
 
-					/* echo back */
-					write(fd, buf, len);
-				}
-			}
-		}
-	}
+        // 클라이언트에게 응답 전송
+        write(client_fd, "Message received", strlen("Message received"));
+    }
 
-	close(sfd_server);
+    // 8. 연결 종료
+    close(client_fd);
+    close(server_fd);
+    printf("Server terminated.\n");
 
-	printf("[%d] terminated\n", pid);
-
-	return EXIT_SUCCESS;
+    return 0;
 }
-

@@ -33,8 +33,7 @@ int main()
 	addr_server.sin_family = AF_INET;
 	addr_server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	addr_server.sin_port = htons(SERVER_PORT);
-
-	ret = connect(sfd, (struct sockaddr *)&addr_server, sizeof(addr_server));
+	ret = bind(sfd, (struct sockaddr *)&addr_server, sizeof(addr_server));
 	if(ret == -1) {
 		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
 		return EXIT_FAILURE;

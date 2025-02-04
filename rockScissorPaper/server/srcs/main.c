@@ -34,7 +34,8 @@ void *startGame(void *fd_)
     if (strncmp(buf, "ready\0", 6))
     {
 		printf("inside if\n");
-        *ret = 1;
+		int one = 1;
+        ret = &one;
 		printf("before return\n");
         return ((void *)ret);
     }

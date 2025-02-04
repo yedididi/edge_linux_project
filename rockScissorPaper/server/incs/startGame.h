@@ -3,6 +3,6 @@
 
 int playerNum = 0;
 
-void startGame(int fd);
+void *startGame(void *fd_);
 
 #endif

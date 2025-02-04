@@ -29,7 +29,9 @@ void *startGame(void *fd_)
 	printf("1\n");
     //get "ready" from client, else return 1
     char buf[64];
+	printf("before read\n");
     read(fd, buf, 63);
+	printf("after read\n");
     if (strncmp(buf, "ready", 5))
     {
         *ret = 1;

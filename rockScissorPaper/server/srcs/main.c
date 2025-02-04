@@ -26,6 +26,9 @@ void *startGame(void *fd_)
     int *ret = 0;
     int fd = *(int *)fd_;
 
+	//send ok
+	write(fd, "OK", 2);
+
     //get "ready" from client, else return 1
     char buf[64];
     int retRead = read(fd, buf, 63);

@@ -15,14 +15,13 @@
 
 pid_t pid;
 
-int main(int argc, char **argv)
+int main()
 {
 	int ret;
 	int len;
 	int sfd;
 	struct sockaddr_in addr_server;
 	char buf[MAX_BUF];
-	char *msg;
 
 	sfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sfd == -1) {

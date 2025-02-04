@@ -14,7 +14,7 @@
 #include <sys/syscall.h>
 #include <pthread.h>
 
-void *startGame(void *fd_);
+//void *startGame(void *fd_);
 
 int playerNum = 0;
 

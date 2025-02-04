@@ -1,8 +1,9 @@
 #include "../incs/startGame.h"
 
 //return 0 if success, else return 1
-int startGame(int fd)
+void *startGame(void *fd_)
 {
+    int fd = *(int *)fd_;
     //get "ready" from client, else return 1
     char buf[64];
     read(fd, buf, 63);

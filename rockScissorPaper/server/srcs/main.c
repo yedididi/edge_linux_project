@@ -12,7 +12,7 @@
 #include <pthread.h>
 
 #include "../incs/define.h"
-#include "../incs/startGame.h"
+// #include "../incs/startGame.h"
 
 #define LISTEN_BACKLOG 5
 #define MAX_BUF 256

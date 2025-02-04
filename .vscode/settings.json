@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "startgame.h": "c"
+        "startgame.h": "c",
+        "define.h": "c"
     }
 }

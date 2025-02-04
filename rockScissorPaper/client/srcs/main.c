@@ -22,18 +22,19 @@ int main()
 	int sfd;
 	struct sockaddr_in addr_server;
 	char buf[MAX_BUF];
-
+    printf("3\n");
 	sfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sfd == -1) {
 		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
 		return EXIT_FAILURE;
 	}
-
+    printf("1\n");
 	memset(&addr_server, 0, sizeof(addr_server));
 	addr_server.sin_family = AF_INET;
 	addr_server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	addr_server.sin_port = htons(SERVER_PORT);
-	ret = bind(sfd, (struct sockaddr *)&addr_server, sizeof(addr_server));
+    printf("2\n");
+	ret = connect(sfd, (struct sockaddr *)&addr_server, sizeof(addr_server));
 	if(ret == -1) {
 		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
 		return EXIT_FAILURE;

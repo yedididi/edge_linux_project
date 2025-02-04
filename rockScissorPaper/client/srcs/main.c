@@ -22,18 +22,18 @@ int main()
 	int sfd;
 	struct sockaddr_in addr_server;
 	char buf[MAX_BUF];
-    printf("3\n");
+    
 	sfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sfd == -1) {
 		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
 		return EXIT_FAILURE;
 	}
-    printf("1\n");
+    
 	memset(&addr_server, 0, sizeof(addr_server));
 	addr_server.sin_family = AF_INET;
 	addr_server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	addr_server.sin_port = htons(SERVER_PORT);
-    printf("2\n");
+    
 	ret = connect(sfd, (struct sockaddr *)&addr_server, sizeof(addr_server));
 	if(ret == -1) {
 		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
@@ -49,11 +49,20 @@ int main()
 		printf("[%d] received: %s\n", pid, buf);
 
         if(strcmp(buf, "OK") == 0) {
-			write(sfd, "Ready", strlen("Ready"));
-			printf("[%d] Ready\n", pid);
+			write(sfd, "ready", strlen("ready"));
+			printf("[%d] ready\n", pid);
+            char buf[64];
+            int retRead = read(sfd, buf, 63);
+            buf[retRead] = '\0';
+            
+            if (strncmp(buf, "playStart\0", 10)==0)
+            {
+                printf("done\n");
+            }
 		}
 	}
 
+    
 	close(sfd);
 
 	return EXIT_SUCCESS;

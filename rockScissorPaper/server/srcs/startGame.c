@@ -3,12 +3,17 @@
 //return 0 if success, else return 1
 void *startGame(void *fd_)
 {
+    int *ret;
     int fd = *(int *)fd_;
+
     //get "ready" from client, else return 1
     char buf[64];
     read(fd, buf, 63);
     if (strcmp(buf, "ready"))
-        return (1);
+    {
+        *ret = 1;
+        return ((void *)ret);
+    }
     
     //send "playStart" if two players connect
     while (1)
@@ -23,5 +28,6 @@ void *startGame(void *fd_)
         usleep(1000);
     }
 
+    return ((void *)ret);
     
 }   

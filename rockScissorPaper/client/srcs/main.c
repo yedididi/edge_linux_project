@@ -41,8 +41,6 @@ int main()
 	}
 	printf("[%d] connected\n", pid);
 
-    write(sfd, "connect", strlen("connect"));
-
 	len = read(sfd, buf, MAX_BUF-1);
 	if(len > 0) {
 		buf[len] = 0;
@@ -62,7 +60,6 @@ int main()
 		}
 	}
 
-    
 	close(sfd);
 
 	return EXIT_SUCCESS;

@@ -26,13 +26,12 @@ void *startGame(void *fd_)
     int *ret = 0;
     int fd = *(int *)fd_;
 
-	printf("1\n");
     //get "ready" from client, else return 1
     char buf[64];
-	printf("before read\n");
-    read(fd, buf, 63);
+    int retRead = read(fd, buf, 63);
+	buf[retRead] = '\0';
 	printf("after read\n");
-    if (strncmp(buf, "ready", 5))
+    if (strncmp(buf, "ready\0", 6))
     {
         *ret = 1;
         return ((void *)ret);

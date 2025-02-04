@@ -21,5 +21,6 @@ int startGame(int fd)
         //mutex unlock
         usleep(1000);
     }
+
     
 }   

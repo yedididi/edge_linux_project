@@ -26,6 +26,7 @@ void *startGame(void *fd_)
     int *ret = 0;
     int fd = *(int *)fd_;
 
+	printf("1\n");
     //get "ready" from client, else return 1
     char buf[64];
     read(fd, buf, 63);
@@ -35,6 +36,7 @@ void *startGame(void *fd_)
         return ((void *)ret);
     }
     
+	printf("2\n");
     //send "playStart" if two players connect
     while (1)
     {
@@ -48,6 +50,7 @@ void *startGame(void *fd_)
         usleep(1000);
     }
 
+	printf("3\n");
     return ((void *)ret);
     
 }  

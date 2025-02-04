@@ -18,6 +18,7 @@
 #define MAX_BUF 256
 
 pid_t pid;
+int playerNum = 0;
 
 //return 0 if success, else return 1
 void *startGame(void *fd_)

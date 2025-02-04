@@ -16,6 +16,6 @@
 
 //void *startGame(void *fd_);
 
-int playerNum = 0;
+//int playerNum = 0;
 
 #endif

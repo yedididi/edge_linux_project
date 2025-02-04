@@ -1,0 +1,25 @@
+#include "../incs/startGame.h"
+
+//return 0 if success, else return 1
+int startGame(int fd)
+{
+    //get "ready" from client, else return 1
+    char buf[64];
+    read(fd, buf, 63);
+    if (strcmp(buf, "ready"))
+        return (1);
+    
+    //send "playStart" if two players connect
+    while (1)
+    {
+        //mutex lock
+        if (playerNum == 2)
+        {
+            write(fd, "playStart", 9);
+            break ;
+        }
+        //mutex unlock
+        usleep(1000);
+    }
+    
+}   

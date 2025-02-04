@@ -3,7 +3,7 @@
 //return 0 if success, else return 1
 void *startGame(void *fd_)
 {
-    int *ret;
+    int *ret = 0;
     int fd = *(int *)fd_;
 
     //get "ready" from client, else return 1

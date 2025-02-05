@@ -8,12 +8,9 @@ int playerNum = 0;
 int main(int argc, char **argv)
 {
 	int sfd_server = 0;
-	int sfd_client = 0;
 	struct sockaddr_in addr_server;
-	struct sockaddr_in addr_client;
-	socklen_t addr_client_len = 0;
 	int optval = 1;
-	pthread_t thread_id = 0;
+	int map[17][17] = {0, };
 
 	t_info *info[MAX_BUF];
 
@@ -25,10 +22,19 @@ int main(int argc, char **argv)
 
 	if (startTCP(&sfd_server, &addr_server, &optval) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	
 	for(;;) 
 	{
-		if (startGame(addr_client_len, sfd_client, addr_client, sfd_server, info, &playerNum, thread_id) == EXIT_FAILURE)
+		if (startGame(sfd_server, info, &playerNum) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
+	}
+
+	endThread(info);
+	while (1)
+	{
+		//main thread
+		(void)map;
+
 	}
 
 	freeInfo(info);

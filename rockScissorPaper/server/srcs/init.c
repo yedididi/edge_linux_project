@@ -28,3 +28,9 @@ void freeInfo(t_info **info)
         free(info[i]);
     }
 }
+
+void endThread(t_info **info)
+{
+    for (int i = 0; info[i]; i++)
+        pthread_join((info[info[i]->clientfd])->thread_id, NULL);
+}

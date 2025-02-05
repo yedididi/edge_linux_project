@@ -1,38 +1,31 @@
 #include "../incs/define.h"
-//return 0 if success, else return 1
-void *startGame(void *info_)
+
+int startGame(socklen_t addr_client_len, int sfd_client, struct sockaddr_in addr_client, int sfd_server, t_info **info, int *playerNum, pthread_t thread_id)
 {
-    int *ret = 0;
-    t_info *info = (t_info *)info_;
-
-	//send ok
-	write(info->clientfd, "OK", 2);
-
-    //get "ready" from client, else return 1
-    char buf[64];
-    int retRead = read(info->clientfd, buf, 63);
-	buf[retRead] = '\0';
-    if (strncmp(buf, "ready\0", 6))
-		pthread_exit(NULL);
-    
-    //send "playStart" if two players connect
-    while (1)
-    {
-        printf("before mutex lock\n");
-        pthread_mutex_lock(&(info->playerNumMuxtex));
-        printf("[%d] this is info->playerNum in between:%d\n", getpid(), *(info->playerNum));
-        printf("after mutex lock\n");
-        if (*(info->playerNum) == 2)
-        {
-            write(info->clientfd, "playStart", 9);
-            printf("[%d] playStart sent\n", info->clientfd);
-            pthread_mutex_unlock(&(info->playerNumMuxtex));
-            break ;
-        }
-        pthread_mutex_unlock(&(info->playerNumMuxtex));
-        usleep(1000);
-        printf("[%d] this is info->playerNum:%d\n", getpid(), *(info->playerNum));
+    printf("[%d] waiting for client ...\n", getpid());
+    addr_client_len = sizeof(addr_client);
+    sfd_client = accept(sfd_server, (struct sockaddr *)&addr_client, &addr_client_len);
+    if(sfd_client == -1) {
+        printf("[%d] error: %s (%d)\n", getpid(), strerror(errno), __LINE__);
+        return EXIT_FAILURE;
     }
-    printf("thread ending\n");
-	pthread_exit(ret);
-}  
+    printf("[%d] connected\n", getpid());
+
+    pthread_mutex_lock(&(info[sfd_client]->playerNumMuxtex));
+    (*playerNum)++;
+    printf("player Num increased to %d\n", *playerNum);
+    pthread_mutex_unlock(&(info[sfd_client]->playerNumMuxtex));
+
+    printf("[%d] creating thread\n", getpid());
+    // info->clientfd = sfd_client;
+    if (fillInfo(&info[sfd_client], playerNum, sfd_client) == EXIT_FAILURE)
+    return (EXIT_FAILURE);
+
+    int ret = pthread_create(&thread_id, NULL, &startThread, info[sfd_client]);
+    if(ret != 0) {
+        printf("[%d] error: %d (%d)\n", getpid(), ret, __LINE__);
+        return EXIT_FAILURE;
+    }
+    pthread_detach(thread_id);
+    return (EXIT_SUCCESS);
+}

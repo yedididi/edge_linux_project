@@ -28,9 +28,10 @@ typedef struct s_info
 } t_info;
 
 //void *startGame(void *fd_);
-int		startTCP(int *sfd_server, int *pid, struct sockaddr_in *addr_server, int *optval);
+int     startGame(socklen_t addr_client_len, int sfd_client, struct sockaddr_in addr_client, int sfd_server, t_info **info, int *playerNum, pthread_t thread_id);
+int     startTCP(int *sfd_server, struct sockaddr_in *addr_server, int *optval);
 bool	fillInfo(t_info **info, int *playerNum, int sfd_client);
-void	*startGame(void *info_);
+void	*startThread(void *info_);
 void	freeInfo(t_info **info);
 
 

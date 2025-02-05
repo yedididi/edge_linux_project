@@ -41,6 +41,7 @@ void *startGame(void *fd_)
         ret = &one;
 		printf("before return\n");
         return ((void *)ret);
+		// pthread_exit(NULL);
     }
     
 	printf("2\n");
@@ -59,36 +60,9 @@ void *startGame(void *fd_)
 
 	printf("3\n");
     return ((void *)ret);
+	// pthread_exit(NULL);
     
 }  
-
-void *thread_func(void *arg)
-{
-	int sfd_client = *(int *)arg;
-	int len;
-	char buf[MAX_BUF];
-	pid_t tid = syscall(__NR_gettid);
-
-	printf("[%d] thread started\n", tid);
-
-	for(;;) {
-		len = read(sfd_client, buf, MAX_BUF-1);
-		if(len <= 0) {
-			close(sfd_client);
-			printf("[%d] closed\n", tid);
-			break;
-		}
-		else {
-			buf[len] = 0;
-			printf("[%d] received: %s\n", tid, buf);
-
-			/* echo back */
-			write(sfd_client, buf, len);
-		}
-	}
-
-	pthread_exit(NULL);
-}
 
 int main(int argc, char **argv)
 {
@@ -104,36 +78,39 @@ int main(int argc, char **argv)
 		printf("usage: %s\n", argv[0]);
 		return EXIT_FAILURE;
 	}
-	printf("[%d] running %s\n", pid = getpid(), argv[0]);
 
-	sfd_server = socket(AF_INET, SOCK_STREAM, 0);
-	if(sfd_server == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+	startTCP(sfd_server);
 
-	/* to prevent "Address already in use" error */
-	ret = setsockopt(sfd_server, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+	// printf("[%d] running %s\n", pid = getpid(), argv[0]);
 
-	memset(&addr_server, 0, sizeof(addr_server));
-	addr_server.sin_family = AF_INET;
-	addr_server.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr_server.sin_port = htons(SERVER_PORT);
-	ret = bind(sfd_server, (struct sockaddr *)&addr_server, sizeof(addr_server));
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+	// sfd_server = socket(AF_INET, SOCK_STREAM, 0);
+	// if(sfd_server == -1) {
+	// 	printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
+	// 	return EXIT_FAILURE;
+	// }
 
-	ret = listen(sfd_server, LISTEN_BACKLOG);
-	if(ret == -1) {
-		printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
-		return EXIT_FAILURE;
-	}
+	// /* to prevent "Address already in use" error */
+	// ret = setsockopt(sfd_server, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	// if(ret == -1) {
+	// 	printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
+	// 	return EXIT_FAILURE;
+	// }
+
+	// memset(&addr_server, 0, sizeof(addr_server));
+	// addr_server.sin_family = AF_INET;
+	// addr_server.sin_addr.s_addr = htonl(INADDR_ANY);
+	// addr_server.sin_port = htons(SERVER_PORT);
+	// ret = bind(sfd_server, (struct sockaddr *)&addr_server, sizeof(addr_server));
+	// if(ret == -1) {
+	// 	printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
+	// 	return EXIT_FAILURE;
+	// }
+
+	// ret = listen(sfd_server, LISTEN_BACKLOG);
+	// if(ret == -1) {
+	// 	printf("[%d] error: %s (%d)\n", pid, strerror(errno), __LINE__);
+	// 	return EXIT_FAILURE;
+	// }
 
 	for(;;) {
 		printf("[%d] waiting for client ...\n", pid);

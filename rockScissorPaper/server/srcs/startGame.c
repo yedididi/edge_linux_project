@@ -1,4 +1,4 @@
-#include "../incs/startGame.h"
+#include "../incs/define.h"
 
 // //return 0 if success, else return 1
 // void *startGame(void *fd_)
@@ -29,5 +29,6 @@
 //     }
 
 //     return ((void *)ret);
+    // pthread_exit(NULL);
     
 // }   

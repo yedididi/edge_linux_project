@@ -1,34 +1,38 @@
 #include "../incs/define.h"
+//return 0 if success, else return 1
+void *startGame(void *info_)
+{
+    int *ret = 0;
+    t_info *info = (t_info *)info_;
 
-// //return 0 if success, else return 1
-// void *startGame(void *fd_)
-// {
-//     int *ret = 0;
-//     int fd = *(int *)fd_;
+	//send ok
+	write(info->clientfd, "OK", 2);
 
-//     //get "ready" from client, else return 1
-//     char buf[64];
-//     read(fd, buf, 63);
-//     if (strcmp(buf, "ready"))
-//     {
-//         *ret = 1;
-//         return ((void *)ret);
-//     }
+    //get "ready" from client, else return 1
+    char buf[64];
+    int retRead = read(info->clientfd, buf, 63);
+	buf[retRead] = '\0';
+    if (strncmp(buf, "ready\0", 6))
+		pthread_exit(NULL);
     
-//     //send "playStart" if two players connect
-//     while (1)
-//     {
-//         //mutex lock
-//         if (playerNum == 2)
-//         {
-//             write(fd, "playStart", 9);
-//             break ;
-//         }
-//         //mutex unlock
-//         usleep(1000);
-//     }
-
-//     return ((void *)ret);
-    // pthread_exit(NULL);
-    
-// }   
+    //send "playStart" if two players connect
+    while (1)
+    {
+        printf("before mutex lock\n");
+        pthread_mutex_lock(&(info->playerNumMuxtex));
+        printf("[%d] this is info->playerNum in between:%d\n", getpid(), *(info->playerNum));
+        printf("after mutex lock\n");
+        if (*(info->playerNum) == 2)
+        {
+            write(info->clientfd, "playStart", 9);
+            printf("[%d] playStart sent\n", info->clientfd);
+            pthread_mutex_unlock(&(info->playerNumMuxtex));
+            break ;
+        }
+        pthread_mutex_unlock(&(info->playerNumMuxtex));
+        usleep(1000);
+        printf("[%d] this is info->playerNum:%d\n", getpid(), *(info->playerNum));
+    }
+    printf("thread ending\n");
+	pthread_exit(ret);
+}  

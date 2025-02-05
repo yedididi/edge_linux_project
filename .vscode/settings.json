@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "startgame.h": "c",
-        "define.h": "c"
+        "define.h": "c",
+        "in.h": "c",
+        "syscall.h": "c",
+        "inet.h": "c"
     }
 }

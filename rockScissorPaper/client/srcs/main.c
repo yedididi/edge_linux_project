@@ -33,6 +33,7 @@ void* receive_thread(void* arg) {
     Coord coord;
     char buf[MAX_BUF];
 
+	(void)arg;
     while (1) {
         // 서버에서 좌표 수신
         ssize_t recv_size = recv(sock, buf, sizeof(Coord), 0);
@@ -54,6 +55,7 @@ void* touch_thread(void* arg) {
     int fd, ret;
     struct input_event ev;
 
+	(void)arg;
     // 터치스크린 장치 열기
     fd = open(TOUCH_DEVICE, O_RDONLY);
     if (fd == -1) {

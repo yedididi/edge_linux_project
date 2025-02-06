@@ -10,7 +10,7 @@ void *sendingThread(void *info_)
       printf("touchtest: %s (%d)\n", strerror(errno), __LINE__);
       exit(1);
    }
-   printf("touchtest: %s opened\n", info->dev_name);
+   printf("touchtest: %s opened,  this is fd:%d\n", info->dev_name, info->touch_fd);
    sleep(1); // to avoid mixing messages
 
    while (1)

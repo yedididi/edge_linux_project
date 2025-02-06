@@ -12,6 +12,7 @@ int main(int argc, char **argv)
 	int optval = 1;
 	int gameStatus = C1_WAITING;
 	int map[MAPSIZE][MAPSIZE] = {0, };
+	int sfd_clients[2] = {0, };
 
 	t_info *info[MAX_BUF];
 
@@ -24,41 +25,78 @@ int main(int argc, char **argv)
 	if (startTCP(&sfd_server, &addr_server, &optval) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 
-	for(;;) 
+	for (int i = 0; i < 2; i++)
 	{
-		if (startGame(sfd_server, info, &playerNum, &gameStatus) == EXIT_FAILURE)
+		if (startGame(sfd_server, info, &playerNum, &gameStatus, &(sfd_clients[i])) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
+
 	}
 
-	endThread(info);
+	// if (info[0]->gameInfo == NULL)
+	// 	printf("right after startGame, info[0]->gameInfo is NULL\n");
+	// else
+	// 	printf("right after startGame, info[0]->gameInfo is NOT NULL\n");
+
+	// if (info[1]->gameInfo == NULL)
+	// 	printf("right after startGame, info[1]->gameInfo is NULL\n");
+	// else
+	// 	printf("right after startGame, info[1]->gameInfo is NOT NULL\n");
+
+
+	for (int i = 0; i < 2; i++)
+		printf("-----------this is sfd_clients[%d]:%d\n", i, sfd_clients[i]);
+
+	if (info[sfd_clients[0]] == NULL)
+		printf("right after startGame, info[sfd_clients[0]] is NULL\n");
+	else
+		printf("right after startGame, info[sfd_clients[0]] is NOT NULL\n");
+
+	if (info[sfd_clients[1]] == NULL)
+		printf("right after startGame, info[sfd_clients[1]] is NULL\n");
+	else
+		printf("right after startGame, info[sfd_clients[1]] is NOT NULL\n");
+
+	if (info[sfd_clients[0]]->gameInfo == NULL)
+		printf("right after startGame, info[sfd_clients[0]]->gameInfo is NULL\n");
+	else
+		printf("right after startGame, info[sfd_clients[0]]->gameInfo is NOT NULL\n");
+
+	if (info[sfd_clients[1]]->gameInfo == NULL)
+		printf("right after startGame, info[sfd_clients[1]]->gameInfo is NULL\n");
+	else
+		printf("right after startGame, info[sfd_clients[1]]->gameInfo is NOT NULL\n");
+
 	printf("starting main thread\n");
 	while (1)
 	{
 		//main thread
+		// printf("main thread gameStatus:%d\n", gameStatus);
 		switch (gameStatus)
 		{
 			case (C1_RCVD):
 			{
-				int newI = info[0]->gameInfo->i;
-				int newJ = info[0]->gameInfo->j;
+				printf("current main state: C1_RCVD\n");
+				int newI = info[sfd_clients[0]]->gameInfo->i;
+				int newJ = info[sfd_clients[0]]->gameInfo->j;
 
 				map[newI][newJ] = 1;
-				info[1]->gameInfo->i = newI;
-				info[1]->gameInfo->j = newJ;
+				info[sfd_clients[1]]->gameInfo->i = newI;
+				info[sfd_clients[1]]->gameInfo->j = newJ;
 				gameStatus = SEND;
 				break;
 			}
 			case (C1_SENT):
 			{
-				int newI = info[0]->gameInfo->i;
-				int newJ = info[0]->gameInfo->j;
+				printf("current main state: C1_SENT\n");
+				int newI = info[sfd_clients[0]]->gameInfo->i;
+				int newJ = info[sfd_clients[0]]->gameInfo->j;
 
 				if (checkGameOver(map, newI, newJ) == GAMEOVER)
 					gameStatus = GAMEOVER;
 				else
 				{
-					info[0]->turn = C2;
-					info[1]->turn = C2;
+					info[sfd_clients[0]]->turn = C2;
+					info[sfd_clients[1]]->turn = C2;
 					gameStatus = C2_WAITING;
 				}
 				break;
@@ -66,32 +104,35 @@ int main(int argc, char **argv)
 
 			case (C2_RCVD):
 			{
-				int newI = info[1]->gameInfo->i;
-				int newJ = info[1]->gameInfo->j;
+				printf("current main state: C2_RCVD\n");
+				int newI = info[sfd_clients[1]]->gameInfo->i;
+				int newJ = info[sfd_clients[1]]->gameInfo->j;
 
 				map[newI][newJ] = 0;
-				info[0]->gameInfo->i = newI;
-				info[0]->gameInfo->j = newJ;
+				info[sfd_clients[0]]->gameInfo->i = newI;
+				info[sfd_clients[0]]->gameInfo->j = newJ;
 				gameStatus = SEND;
 				break;
 			}
 			case (C2_SENT):
 			{
-				int newI = info[1]->gameInfo->i;
-				int newJ = info[1]->gameInfo->j;
+				printf("current main state: C2_SENT\n");
+				int newI = info[sfd_clients[1]]->gameInfo->i;
+				int newJ = info[sfd_clients[1]]->gameInfo->j;
 
 				if (checkGameOver(map, newI, newJ) == GAMEOVER)
 					gameStatus = GAMEOVER;
 				else
 				{
-					info[0]->turn = C1;
-					info[1]->turn = C1;
+					info[sfd_clients[0]]->turn = C1;
+					info[sfd_clients[1]]->turn = C1;
 					gameStatus = C1_WAITING;
 				}
 				break;
 			}
 			case (ENDGAME):
 			{
+				printf("current main state: ENDGAME\n");
 				freeInfo(info);
 				close(sfd_server);
 
@@ -102,6 +143,7 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+	endThread(info);
 
 	freeInfo(info);
 	close(sfd_server);

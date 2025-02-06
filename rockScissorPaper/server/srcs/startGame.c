@@ -1,6 +1,6 @@
 #include "../incs/define.h"
 
-int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus)
+int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus, int *sfd_clients)
 {
     int sfd_client;
     struct sockaddr_in addr_client;
@@ -13,15 +13,27 @@ int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus)
         printf("[%d] error: %s (%d)\n", getpid(), strerror(errno), __LINE__);
         return EXIT_FAILURE;
     }
+    *sfd_clients = sfd_client;
+    
     printf("[%d] connected\n", getpid());
 
+    printf("sfd_client:%d\n", sfd_client);
     if (fillInfo(&info[sfd_client], playerNum, sfd_client, gameStatus) == EXIT_FAILURE)
-    return (EXIT_FAILURE);
+        return (EXIT_FAILURE);
+    if (info[sfd_client]->gameInfo == NULL)
+        printf("info[sfd_client]->gameInfo is NULL\n");
+    else
+        printf("right after fillInfo, gameInfo malloc ok\n");
 
     pthread_mutex_lock(&(info[sfd_client]->playerNumMuxtex));
     (*playerNum)++;
     printf("player Num increased to %d\n", *playerNum);
     pthread_mutex_unlock(&(info[sfd_client]->playerNumMuxtex));
+
+    if (*playerNum == 1)
+        info[sfd_client]->whichClient = 1;
+    else if (*playerNum == 2)
+        info[sfd_client]->whichClient = 2;
 
 
     printf("[%d] creating thread\n", getpid());

@@ -17,6 +17,12 @@ void *startThread(void *info_)
             write(info->clientfd, "playStart", 9);
             printf("[%d] playStart sent\n", info->clientfd);
             pthread_mutex_unlock(&(info->playerNumMuxtex));
+
+            if (info->whichClient == 1)
+                write(info->clientfd, "C1", 2);
+            else if (info->whichClient == 2)
+                write(info->clientfd, "C2", 2);
+
             omokStart(info);
             break;
         }
@@ -36,48 +42,57 @@ void omokStart(t_info *info)
         {
             case (C1_WAITING):
             {
-                char buf[MAX_BUF];
-
-                int readRet = read(info->clientfd, buf, MAX_BUF);
-                if (readRet < 0)
+                printf("game status:C1_WAITING\n");
+                if (info->turn == C1)
                 {
-                    printf("read error at C1_WAITING\n");
-                    exit(1);
+                    char buf[MAX_BUF];
+
+                    int readRet = read(info->clientfd, buf, MAX_BUF);
+                    if (readRet < 0)
+                    {
+                        printf("read error at C1_WAITING\n");
+                        exit(1);
+                    }
+
+                    t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+
+                    printf("arrived from C1, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
+
+                    info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
+                    info->gameInfo->i = gameInfoRCVD->i;
+                    info->gameInfo->j = gameInfoRCVD->j;
+                    *(info->gameStatus) = C1_RCVD;
                 }
-
-                t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
-
-                printf("arrived from C1, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
-
-                info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
-                info->gameInfo->i = gameInfoRCVD->i;
-                info->gameInfo->j = gameInfoRCVD->j;
-                *(info->gameStatus) = C1_RCVD;
                 break;
             }
             case (C2_WAITING):
             {
-                char buf[MAX_BUF];
-
-                int readRet = read(info->clientfd, buf, MAX_BUF);
-                if (readRet < 0)
+                printf("game status:C2_WAITING\n");
+                if (info->turn == C2)
                 {
-                    printf("read error at C1_WAITING\n");
-                    exit(1);
+                    char buf[MAX_BUF];
+
+                    int readRet = read(info->clientfd, buf, MAX_BUF);
+                    if (readRet < 0)
+                    {
+                        printf("read error at C2_WAITING\n");
+                        exit(1);
+                    }
+
+                    t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+
+                    printf("arrived from C2, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
+
+                    info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
+                    info->gameInfo->i = gameInfoRCVD->i;
+                    info->gameInfo->j = gameInfoRCVD->j;
+                    *(info->gameStatus) = C2_RCVD;
                 }
-
-                t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
-
-                printf("arrived from C2, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
-
-                info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
-                info->gameInfo->i = gameInfoRCVD->i;
-                info->gameInfo->j = gameInfoRCVD->j;
-                *(info->gameStatus) = C2_RCVD;
                 break;
             }
             case (SEND):
             {
+                printf("game status:SEND\n");
                 t_gameInfo gameInfo;
                 gameInfo.i = info->gameInfo->i;
                 gameInfo.j = info->gameInfo->j;
@@ -96,6 +111,7 @@ void omokStart(t_info *info)
 
             case (GAMEOVER):
             {
+                printf("game status:GAMEOVER\n");
                 t_gameInfo gameInfo;
                 gameInfo.i = -1;
                 gameInfo.j = -1;

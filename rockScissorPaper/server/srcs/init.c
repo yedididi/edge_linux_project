@@ -20,16 +20,31 @@ bool fillInfo(t_info **info, int *playerNum, int sfd_client, int *gameStatus)
     (*info)->turn = C1;
     if (pthread_mutex_init(&((*info)->playerNumMuxtex), NULL) != 0)
 		return (EXIT_FAILURE);
-        
+
     (*info)->gameInfo = (t_gameInfo *)malloc(sizeof(t_gameInfo));
     if ((*info)->gameInfo == NULL)
         printf("malloc error\n");
+    else
+        printf("gameInfo malloc ok\n");
 
     (*info)->gameInfo->i = -1;
     (*info)->gameInfo->j = -1;
     (*info)->gameInfo->gameStatus = PLAYING;
     return (EXIT_SUCCESS);
 }
+
+// t_info *fillGameInfo(t_info *info)
+// {
+//     info->gameInfo = (t_gameInfo *)malloc(sizeof(t_gameInfo));
+//     if (info->gameInfo == NULL)
+//         printf("malloc error\n");
+//     else
+//         printf("gameInfo malloc ok\n");
+
+//     info->gameInfo->i = -1;
+//     info->gameInfo->j = -1;
+//     info->gameInfo->gameStatus = PLAYING;
+// }
 
 void freeInfo(t_info **info)
 {

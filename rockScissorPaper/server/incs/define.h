@@ -19,8 +19,8 @@
 #define SERVER_PORT 25000
 #define LISTEN_BACKLOG 5
 #define MAX_BUF 256
-#define MAPSIZE 17
-#define WINNINGNUM 4 //4가 오목 
+#define MAPSIZE 10
+#define WINNINGNUM 3 //4가 오목 
 
 typedef enum e_gameStat 
 {
@@ -56,13 +56,14 @@ typedef struct s_info
     int             clientfd;
     int             *gameStatus;
     int             turn;
+    int             whichClient;
     pthread_mutex_t playerNumMuxtex;
     pthread_t       thread_id;
     t_gameInfo      *gameInfo;
 } t_info;
 
 //void *startGame(void *fd_);
-int     startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus);
+int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus, int *sfd_clients);
 int     startTCP(int *sfd_server, struct sockaddr_in *addr_server, int *optval);
 bool    fillInfo(t_info **info, int *playerNum, int sfd_client, int *gameStatus);
 int     checkGameOver(int map[MAPSIZE][MAPSIZE], int newI, int newJ);

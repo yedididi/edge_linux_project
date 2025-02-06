@@ -29,6 +29,7 @@ void *startThread(void *info_)
 
 void omokStart(t_info *info)
 {
+    printf("sub thread starting\n");
     while (1)
     {
         switch (*(info->gameStatus))
@@ -45,6 +46,9 @@ void omokStart(t_info *info)
                 }
 
                 t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+
+                printf("arrived from C1, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
+
                 info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
                 info->gameInfo->i = gameInfoRCVD->i;
                 info->gameInfo->j = gameInfoRCVD->j;
@@ -63,6 +67,9 @@ void omokStart(t_info *info)
                 }
 
                 t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+
+                printf("arrived from C2, (%d, %d)\n", gameInfoRCVD->i, gameInfoRCVD->j);
+
                 info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
                 info->gameInfo->i = gameInfoRCVD->i;
                 info->gameInfo->j = gameInfoRCVD->j;
@@ -77,6 +84,9 @@ void omokStart(t_info *info)
                 gameInfo.gameStatus = PLAYING;
 
                 write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+
+                printf("writing to client...this should print twice\n");
+
                 if (info->turn == C1)
                     *(info->gameStatus) = C1_SENT;
                 else
@@ -92,6 +102,9 @@ void omokStart(t_info *info)
                 gameInfo.gameStatus = GAMEOVER;
 
                 write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+
+                printf("sending gameover\n");
+
                 if (info->turn == C1)
                     *(info->gameStatus) = C1_SENT;
                 else

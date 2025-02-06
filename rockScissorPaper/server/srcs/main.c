@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	}
 
 	endThread(info);
+	printf("starting main thread\n");
 	while (1)
 	{
 		//main thread

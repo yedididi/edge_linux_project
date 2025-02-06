@@ -5,6 +5,7 @@
         "in.h": "c",
         "syscall.h": "c",
         "inet.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "stdlib.h": "c"
     }
 }

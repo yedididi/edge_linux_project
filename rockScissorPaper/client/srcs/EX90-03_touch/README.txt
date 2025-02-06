@@ -1,5 +1,4 @@
 1. 터치 드라이버 설치
-
 cd
 git clone https://github.com/goodtft/LCD-show.git
 chmod -R 755 LCD-show

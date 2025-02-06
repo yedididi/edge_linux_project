@@ -15,7 +15,7 @@ void *sendingThread(void *info_)
 
    while (1)
    {
-      printf("info->turn:%d, info->whichClient:%d", info->turn, info->whichClient);
+      printf("info->turn:%d, info->whichClient:%d\n", info->turn, info->whichClient);
       sleep(1);
       if (info->turn == info->whichClient)
       {
@@ -69,8 +69,11 @@ t_gameInfo getClick(t_info *info, int touch_fd)
         exit(1);
     }
 
-    if (ev.type == 1 && ev.code == 330 && ev.value == 0)
+   for (;;)
+   {
+      if (ev.type == 1 && ev.code == 330 && ev.value == 0)
       {
+         printf("pressed\n");
          x_selected = (x_scaled - 220) / 45;
          y_selected = (y_scaled - 60) / 45;
          x_selected_coordinate = 220 + 45 * x_selected;
@@ -85,14 +88,19 @@ t_gameInfo getClick(t_info *info, int touch_fd)
             x_selected_temp = x_selected;
             y_selected_temp = y_selected;
             draw_target(info->map, x_selected_temp, y_selected_temp, x_before_coordinate, y_before_coordinate, x_selected_coordinate, y_selected_coordinate);
-
+            printf("touched point selected, inside board\n");
          }
 
          // 버튼 누르면 바둑알 두기
          if (x_scaled >= 700 && y_scaled >= 380)
          {
             add_stone(info->map, x_selected_temp, y_selected_temp, x_selected_coordinate_temp, y_selected_coordinate_temp);
+            printf("putting rock when pressed button\n");
             info->map->clientMap[x_selected_temp][y_selected_temp] = 1;
+            gameInfo.i = x_selected;
+            gameInfo.j = y_selected;
+            gameInfo.gameStatus = PLAYING;
+            return (gameInfo);
          }
       }
 
@@ -116,9 +124,10 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          // y 좌표 축소 (비율 변환)
          y_scaled = (y_coordinate - original_min) * target_height / (original_max - original_min);
       }
+   }
 
-    gameInfo.i = x_selected;
-    gameInfo.j = y_selected;
-    gameInfo.gameStatus = PLAYING;
-    return (gameInfo);
+   gameInfo.i = x_selected;
+   gameInfo.j = y_selected;
+   gameInfo.gameStatus = PLAYING;
+   return (gameInfo);
 }

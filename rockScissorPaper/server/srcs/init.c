@@ -8,7 +8,7 @@ void initInfo(t_info **info)
     }
 }
 
-bool fillInfo(t_info **info, int *playerNum, int sfd_client)
+bool fillInfo(t_info **info, int *playerNum, int sfd_client, int *gameStatus)
 {
     *info = (t_info *)malloc(sizeof(t_info));
     if (*info == NULL)
@@ -16,8 +16,11 @@ bool fillInfo(t_info **info, int *playerNum, int sfd_client)
     
     (*info)->playerNum = playerNum;
     (*info)->clientfd = sfd_client;
+    (*info)->gameStatus = gameStatus;
+    (*info)->turn = C1;
     if (pthread_mutex_init(&((*info)->playerNumMuxtex), NULL) != 0)
 		return (EXIT_FAILURE);
+    (*info)->gameInfo = (t_gameInfo *)malloc(sizeof(t_gameInfo));
     return (EXIT_SUCCESS);
 }
 
@@ -25,6 +28,7 @@ void freeInfo(t_info **info)
 {
     for (int i = 0; info[i]; i++)
     {
+        free(info[i]->gameInfo);
         free(info[i]);
     }
 }

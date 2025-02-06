@@ -1,6 +1,6 @@
 #include "../incs/define.h"
 
-int startGame(int sfd_server, t_info **info, int *playerNum)
+int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus)
 {
     int sfd_client;
     struct sockaddr_in addr_client;
@@ -21,8 +21,8 @@ int startGame(int sfd_server, t_info **info, int *playerNum)
     printf("player Num increased to %d\n", *playerNum);
     pthread_mutex_unlock(&(info[sfd_client]->playerNumMuxtex));
 
-    
-    if (fillInfo(&info[sfd_client], playerNum, sfd_client) == EXIT_FAILURE)
+
+    if (fillInfo(&info[sfd_client], playerNum, sfd_client, gameStatus) == EXIT_FAILURE)
     return (EXIT_FAILURE);
 
     printf("[%d] creating thread\n", getpid());
@@ -32,5 +32,7 @@ int startGame(int sfd_server, t_info **info, int *playerNum)
         printf("[%d] error: %d (%d)\n", getpid(), ret, __LINE__);
         return EXIT_FAILURE;
     }
+
     return (EXIT_SUCCESS);
+
 }

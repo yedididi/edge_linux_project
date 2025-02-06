@@ -29,5 +29,76 @@ void *startThread(void *info_)
 
 void omokStart(t_info *info)
 {
-    (void)info;
+    while (1)
+    {
+        switch (*(info->gameStatus))
+        {
+            case (C1_WAITING):
+            {
+                char buf[MAX_BUF];
+
+                int readRet = read(info->clientfd, buf, MAX_BUF);
+                if (readRet < 0)
+                {
+                    printf("read error at C1_WAITING\n");
+                    exit(1);
+                }
+
+                t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+                info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
+                info->gameInfo->i = gameInfoRCVD->i;
+                info->gameInfo->j = gameInfoRCVD->j;
+                *(info->gameStatus) = C1_RCVD;
+                break;
+            }
+            case (C2_WAITING):
+            {
+                char buf[MAX_BUF];
+
+                int readRet = read(info->clientfd, buf, MAX_BUF);
+                if (readRet < 0)
+                {
+                    printf("read error at C1_WAITING\n");
+                    exit(1);
+                }
+
+                t_gameInfo *gameInfoRCVD = (t_gameInfo *)buf;
+                info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
+                info->gameInfo->i = gameInfoRCVD->i;
+                info->gameInfo->j = gameInfoRCVD->j;
+                *(info->gameStatus) = C2_RCVD;
+                break;
+            }
+            case (SEND):
+            {
+                t_gameInfo gameInfo;
+                gameInfo.i = info->gameInfo->i;
+                gameInfo.j = info->gameInfo->j;
+                gameInfo.gameStatus = PLAYING;
+
+                write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+                if (info->turn == C1)
+                    *(info->gameStatus) = C1_SENT;
+                else
+                    *(info->gameStatus) = C2_SENT;
+                break;
+            }
+
+            case (GAMEOVER):
+            {
+                t_gameInfo gameInfo;
+                gameInfo.i = -1;
+                gameInfo.j = -1;
+                gameInfo.gameStatus = GAMEOVER;
+
+                write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+                if (info->turn == C1)
+                    *(info->gameStatus) = C1_SENT;
+                else
+                    *(info->gameStatus) = C2_SENT;
+                break;
+            }
+            
+        }
+    }
 }

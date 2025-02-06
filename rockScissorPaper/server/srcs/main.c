@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#define SERVER_PORT 8080
+#define SERVER_PORT 25000
 #define MAX_BUF 256
 
 int main() {

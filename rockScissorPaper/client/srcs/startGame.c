@@ -11,9 +11,9 @@ void startGame(int sfd, char *dev_name)
     int readRet = read(sfd, buf, MAX_BUF);
     buf[readRet] = '\0';
     if (strncmp(buf, "C1\0", 3) == 0)
-        whichClient = 1;
+        whichClient = C1;
     else if (strncmp(buf, "C2\0", 3) == 0)
-        whichClient = 2;
+        whichClient = C2;
     info = fillInfo(sfd, dev_name, whichClient);
     
     printf("[%d] creating thread\n", getpid());

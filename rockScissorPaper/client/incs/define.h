@@ -20,7 +20,7 @@
 #define SERVER_IP "10.10.141.206"
 #define SERVER_PORT 25000
 #define MAX_BUF 256
-#define MAPSIZE 17
+#define MAPSIZE 10
 #define FBDEV "/dev/fb0"
 #define COLOR_RED 0xff0000
 #define COLOR_GREEN 0x00ff00

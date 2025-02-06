@@ -15,6 +15,8 @@ void *sendingThread(void *info_)
 
    while (1)
    {
+      printf("info->turn:%d, info->whichClient:%d", info->turn, info->whichClient);
+      sleep(1);
       if (info->turn == info->whichClient)
       {
          t_gameInfo clickResult;

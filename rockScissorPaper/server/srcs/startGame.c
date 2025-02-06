@@ -15,15 +15,14 @@ int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus)
     }
     printf("[%d] connected\n", getpid());
 
+    if (fillInfo(&info[sfd_client], playerNum, sfd_client, gameStatus) == EXIT_FAILURE)
+    return (EXIT_FAILURE);
 
     pthread_mutex_lock(&(info[sfd_client]->playerNumMuxtex));
     (*playerNum)++;
     printf("player Num increased to %d\n", *playerNum);
     pthread_mutex_unlock(&(info[sfd_client]->playerNumMuxtex));
 
-
-    if (fillInfo(&info[sfd_client], playerNum, sfd_client, gameStatus) == EXIT_FAILURE)
-    return (EXIT_FAILURE);
 
     printf("[%d] creating thread\n", getpid());
     int ret = pthread_create(&((info[sfd_client])->thread_id), NULL, &startThread, info[sfd_client]);

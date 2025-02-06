@@ -64,7 +64,7 @@ t_gameInfo getClick(t_info *info, int touch_fd)
    
    for (;;)
    {
-      printf("before read\n");
+      // printf("before read\n");
       int ret = read(touch_fd, &ev, sizeof(struct input_event));
       if (ret == -1)
       {
@@ -72,7 +72,7 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          exit(1);
       }
 
-      printf("%d %d %d\n", ev.type, ev.code, ev.value);
+      // printf("%d %d %d\n", ev.type, ev.code, ev.value);
 
       if (ev.type == 1 && ev.code == 330 && ev.value == 0)
       {

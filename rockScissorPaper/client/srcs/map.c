@@ -63,5 +63,6 @@ t_map *map_init()
       }
    }
 
+   map->color = COLOR_BLACK;
    return (map);
 }

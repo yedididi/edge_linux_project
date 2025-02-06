@@ -29,6 +29,16 @@
 #define COLOR_WHITE 0xffffff
 #define COLOR_BROWN 0xc68a12
 
+typedef struct s_map
+{
+    int fb_fd;
+    int size;
+    char *mapNum;
+    int color;
+    struct fb_var_screeninfo vinfo;
+    struct fb_fix_screeninfo finfo;
+    char **clientMap; //must free~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+} t_map;
 
 typedef struct s_gameInfo
 {
@@ -39,19 +49,11 @@ typedef struct s_gameInfo
 typedef struct s_info
 {
     int serverFD;
+    char *dev_name;
+    int touch_fd;
     t_gameInfo gameInfo;
+    t_map *map;
 } t_info;
-
-typedef struct s_map
-{
-    int fb_fd;
-    int size;
-    char *mapNum;
-    int color;
-    struct fb_var_screeninfo vinfo;
-    struct fb_fix_screeninfo finfo;
-
-} t_map;
 
 typedef enum e_gameStat 
 {
@@ -60,16 +62,18 @@ typedef enum e_gameStat
 } t_gameStat; 
 
 int     connectToServer();
-void    startGame(int sfd);
+void startGame(int sfd, char *dev_name);
 void *sendingThread(void *info_);
 void mainThread(int sfd);
-t_gameInfo getClick(t_gameInfo gameInfo);
-t_info *fillInfo(int sfd);
+t_gameInfo getClick(t_info *info, int touch_fd);
+t_info *fillInfo(int sfd, char *dev_name);
 
 t_map *map_init();
 void draw_map(t_map *map);
 void draw_rect(int x, int y, int w, int h, unsigned int color, struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip, char *map);
 void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip, char *map);
+void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_before_coordinate, int y_before_coordinate, int x_selected_coordinate, int y_selected_coordinate);
+void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selected_coordinate_temp, int y_selected_coordinate_temp);
 void draw_button(t_map *map);
 
 void printRock(int i, int j);

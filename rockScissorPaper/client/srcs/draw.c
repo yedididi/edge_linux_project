@@ -88,19 +88,6 @@ void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screen
    }
 }
 
-// void draw_turn()
-// {
-//    if (color == COLOR_BLACK)
-//    {
-//       draw_circle(750, 430, 30, COLOR_BLACK, &vinfo, &finfo, map);
-//    }
-
-//    else if (color == COLOR_WHITE)
-//    {
-//       draw_circle(750, 430, 30, COLOR_WHITE, &vinfo, &finfo, map);
-//    }
-// }
-
 void draw_turn(t_map *map)
 {
    if (map->color == COLOR_BLACK)
@@ -121,49 +108,71 @@ void draw_button(t_map *map)
    draw_turn(map);
 }
 
-// void draw_target()
-// {
-//    if (selected[x_selected_temp][y_selected_temp] != 1)
-//    {
-//       if (x_before_coordinate == 0 && y_before_coordinate == 0)
-//       {
-//          draw_rect(0, 0, 1, 1, COLOR_BLACK, &vinfo, &finfo, map);
-//       }
+void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, 
+    int x_before_coordinate, int y_before_coordinate, int x_selected_coordinate, int y_selected_coordinate)
+{
+   if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
+   {
+      if (x_before_coordinate == 0 && y_before_coordinate == 0)
+      {
+         draw_rect(0, 0, 1, 1, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
+      }
 
-//       else if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
-//       {
-//          draw_rect(x_before_coordinate - 15, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate - 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate - 15, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
+      else if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
+      {
+         draw_rect(x_before_coordinate - 15, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate - 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate - 15, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_before_coordinate - 15, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate - 15, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate - 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
+         draw_rect(x_before_coordinate - 15, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate - 15, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate - 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_before_coordinate + 5, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate + 10, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate + 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
+         draw_rect(x_before_coordinate + 5, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate + 10, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate + 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_before_coordinate + 5, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate + 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
-//          draw_rect(x_before_coordinate + 10, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &vinfo, &finfo, map);
+         draw_rect(x_before_coordinate + 5, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate + 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_before_coordinate + 10, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 15, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate - 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
+         draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate - 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 5, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate - 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
+         draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 5, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate - 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_selected_coordinate + 5, y_selected_coordinate + 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 5, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
+         draw_rect(x_selected_coordinate + 5, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 5, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
 
-//          draw_rect(x_selected_coordinate + 5, y_selected_coordinate - 15, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//          draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 10, 5, 5, COLOR_RED, &vinfo, &finfo, map);
-//       }
-//    }
-//    draw_button();
-// }
+         draw_rect(x_selected_coordinate + 5, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+      }
+   }
+   draw_button(map);
+}
+
+
+void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selected_coordinate_temp, int y_selected_coordinate_temp)
+{
+   if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
+   {
+      if (map->color == COLOR_BLACK)
+      {
+         draw_circle(x_selected_coordinate_temp, y_selected_coordinate_temp, 22, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
+
+         map->color = COLOR_WHITE;
+      }
+
+      else if (map->color == COLOR_WHITE)
+      {
+         draw_circle(x_selected_coordinate_temp, y_selected_coordinate_temp, 22, COLOR_WHITE, &(map->vinfo), &(map->finfo), map->mapNum);
+         map->color = COLOR_BLACK;
+      }
+      printf("%d, %d\n", x_selected_temp, y_selected_temp);
+   }
+}

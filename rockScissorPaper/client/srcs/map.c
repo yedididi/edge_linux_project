@@ -41,5 +41,27 @@ t_map *map_init()
    }
    printf("[%d] %s was mapped to %p\n", getpid(), FBDEV, map->mapNum);
    
+   map->clientMap = (char **)malloc(sizeof(char *) * MAPSIZE);
+   if (map->clientMap == NULL)
+   {
+      printf("malloc error\n");
+      exit(1);
+   }
+
+   for (int i = 0; i < MAPSIZE; i++)
+   {
+      map->clientMap[i] = (char *)malloc(sizeof(char) * MAPSIZE);
+      if (map->clientMap[i] == NULL)
+      {
+         printf("malloc error\n");
+         exit(1);
+      }
+      else
+      {
+         for (int j = 0; j < MAPSIZE; j++)
+            map->clientMap[i][j] = 0;
+      }
+   }
+
    return (map);
 }

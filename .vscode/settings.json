@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "ioctl.h": "c",
-        "fb.h": "c"
+        "fb.h": "c",
+        "define.h": "c"
     }
 }

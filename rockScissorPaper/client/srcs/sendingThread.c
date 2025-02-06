@@ -71,6 +71,7 @@ t_gameInfo getClick(t_info *info, int touch_fd)
 
    for (;;)
    {
+      printf("%d %d %d\n", ev.type, ev.code, ev.value);
       if (ev.type == 1 && ev.code == 330 && ev.value == 0)
       {
          printf("pressed\n");

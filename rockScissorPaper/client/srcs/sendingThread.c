@@ -12,18 +12,22 @@ void *sendingThread(void *info_)
    }
    printf("touchtest: %s opened\n", info->dev_name);
    sleep(1); // to avoid mixing messages
+
    while (1)
    {
-      t_gameInfo clickResult;
-      clickResult = getClick(info, info->touch_fd);
+      if (info->turn == info->whichClient)
+      {
+         t_gameInfo clickResult;
+         clickResult = getClick(info, info->touch_fd);
 
-      printf("(%d, %d) clicked\n", clickResult.i, clickResult.j);
-      t_gameInfo gameInfo;
-      gameInfo.i = clickResult.i;
-      gameInfo.j = clickResult.j;
-      gameInfo.gameStatus = PLAYING;
+         printf("(%d, %d) clicked\n", clickResult.i, clickResult.j);
+         t_gameInfo gameInfo;
+         gameInfo.i = clickResult.i;
+         gameInfo.j = clickResult.j;
+         gameInfo.gameStatus = PLAYING;
 
-      write(info->serverFD, &gameInfo, sizeof(t_gameInfo));
+         write(info->serverFD, &gameInfo, sizeof(t_gameInfo));
+      }
       //usleep()
    }
 }
@@ -86,7 +90,6 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          if (x_scaled >= 700 && y_scaled >= 380)
          {
             add_stone(info->map, x_selected_temp, y_selected_temp, x_selected_coordinate_temp, y_selected_coordinate_temp);
-
             info->map->clientMap[x_selected_temp][y_selected_temp] = 1;
          }
       }

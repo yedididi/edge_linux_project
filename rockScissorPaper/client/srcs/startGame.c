@@ -2,11 +2,19 @@
 
 void startGame(int sfd, char *dev_name)
 {
+    int whichClient = 0;
     pthread_t sendingThreadID;
     t_info *info; //dont forget to free at all exit
     //t_map *map; //dont forget to free at all exit
 
-    info = fillInfo(sfd, dev_name);
+    char buf[MAX_BUF];
+    int readRet = read(sfd, buf, MAX_BUF);
+    buf[readRet] = '\0';
+    if (strncmp(buf, "C1\0", 3) == 0)
+        whichClient = 1;
+    else if (strncmp(buf, "C2\0", 3) == 0)
+        whichClient = 2;
+    info = fillInfo(sfd, dev_name, whichClient);
     
     printf("[%d] creating thread\n", getpid());
     int ret = pthread_create(&sendingThreadID, NULL, &sendingThread, info);
@@ -16,10 +24,10 @@ void startGame(int sfd, char *dev_name)
         exit(1);
     }
 
-    mainThread(sfd);
+    mainThread(info, sfd);
 }
 
-t_info *fillInfo(int sfd, char *dev_name)
+t_info *fillInfo(int sfd, char *dev_name, int whichClient)
 {
     t_info *info;
 
@@ -28,11 +36,13 @@ t_info *fillInfo(int sfd, char *dev_name)
         printf("malloc error\n");
     info->serverFD = sfd;
     info->dev_name = dev_name;
+    info->turn = C1;
+    info->whichClient = whichClient;
     info->map = map_init();
     return (info);
 }
 
-void mainThread(int sfd)
+void mainThread(t_info *info, int sfd)
 {
     for (;;)
     {
@@ -51,7 +61,12 @@ void mainThread(int sfd)
         }
         else
         {
-            printRock(gameInfo->i, gameInfo->j);
+            draw_turn(info->map);
+            if (info->turn == C1)
+                info->turn = C2;
+            else if (info->turn == C2)
+                info->turn = C1;
+            //printRock(gameInfo->i, gameInfo->j);
         }
     }
 }

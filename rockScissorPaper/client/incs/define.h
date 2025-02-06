@@ -51,6 +51,8 @@ typedef struct s_info
     int serverFD;
     char *dev_name;
     int touch_fd;
+    int turn;
+    int whichClient;
     t_gameInfo gameInfo;
     t_map *map;
 } t_info;
@@ -61,12 +63,18 @@ typedef enum e_gameStat
     PLAYING
 } t_gameStat; 
 
+typedef enum e_turn 
+{
+    C1,
+    C2
+} t_turn; 
+
 int     connectToServer();
 void startGame(int sfd, char *dev_name);
 void *sendingThread(void *info_);
 void mainThread(int sfd);
 t_gameInfo getClick(t_info *info, int touch_fd);
-t_info *fillInfo(int sfd, char *dev_name);
+t_info *fillInfo(int sfd, char *dev_name, int whichClient);
 
 t_map *map_init();
 void draw_map(t_map *map);

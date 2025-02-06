@@ -161,6 +161,8 @@ void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selec
 {
    if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
    {
+      printf("map->color:%d\n", map->color);
+      
       if (map->color == COLOR_BLACK)
       {
          draw_circle(x_selected_coordinate_temp, y_selected_coordinate_temp, 22, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);

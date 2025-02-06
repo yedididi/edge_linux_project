@@ -100,8 +100,8 @@ t_gameInfo getClick(t_info *info, int touch_fd)
             add_stone(info->map, x_selected_temp, y_selected_temp, x_selected_coordinate_temp, y_selected_coordinate_temp);
             printf("putting rock when pressed button\n");
             info->map->clientMap[x_selected_temp][y_selected_temp] = 1;
-            gameInfo.i = x_selected;
-            gameInfo.j = y_selected;
+            gameInfo.i = x_selected_temp;
+            gameInfo.j = y_selected_temp;
             gameInfo.gameStatus = PLAYING;
             return (gameInfo);
          }

@@ -14,8 +14,10 @@ void startGame(int sfd, char *dev_name)
         whichClient = C1;
     else if (strncmp(buf, "C2\0", 3) == 0)
         whichClient = C2;
+
     info = fillInfo(sfd, dev_name, whichClient);
     
+    draw_map(info->map);
     printf("[%d] creating thread\n", getpid());
     int ret = pthread_create(&sendingThreadID, NULL, &sendingThread, info);
     if(ret != 0) 

@@ -62,13 +62,15 @@ t_gameInfo getClick(t_info *info, int touch_fd)
     int x_selected_temp = 0;
     int y_selected_temp = 0;
 
+   printf("before read\n");
     int ret = read(touch_fd, &ev, sizeof(struct input_event));
     if (ret == -1)
     {
         printf("touchtest: %s (%d)\n", strerror(errno), __LINE__);
         exit(1);
     }
-
+   
+   printf("inside get click, after read and before for\n");
    for (;;)
    {
       printf("%d %d %d\n", ev.type, ev.code, ev.value);

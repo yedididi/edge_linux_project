@@ -2,29 +2,30 @@
 
 void *sendingThread(void *info_)
 {
-    t_info *info = (t_info *)info_;
+   t_info *info = (t_info *)info_;
 
-    info->touch_fd = open(info->dev_name, O_RDONLY);
-    if (info->touch_fd == -1)
-    {
-        printf("touchtest: %s (%d)\n", strerror(errno), __LINE__);
-        exit(1);
-    }
-    printf("touchtest: %s opened\n", info->dev_name);
-    sleep(1); // to avoid mixing messages
-    while (1)
-    {
-        t_gameInfo clickResult;
-        clickResult = getClick(info, info->touch_fd);
+   info->touch_fd = open(info->dev_name, O_RDONLY);
+   if (info->touch_fd == -1)
+   {
+      printf("touchtest: %s (%d)\n", strerror(errno), __LINE__);
+      exit(1);
+   }
+   printf("touchtest: %s opened\n", info->dev_name);
+   sleep(1); // to avoid mixing messages
+   while (1)
+   {
+      t_gameInfo clickResult;
+      clickResult = getClick(info, info->touch_fd);
 
-        t_gameInfo gameInfo;
-        gameInfo.i = clickResult.i;
-        gameInfo.j = clickResult.j;
-        gameInfo.gameStatus = PLAYING;
+      printf("(%d, %d) clicked\n", clickResult.i, clickResult.j);
+      t_gameInfo gameInfo;
+      gameInfo.i = clickResult.i;
+      gameInfo.j = clickResult.j;
+      gameInfo.gameStatus = PLAYING;
 
-        write(info->serverFD, &gameInfo, sizeof(t_gameInfo));
-        //usleep()
-    }
+      write(info->serverFD, &gameInfo, sizeof(t_gameInfo));
+      //usleep()
+   }
 }
 
 t_gameInfo getClick(t_info *info, int touch_fd)

@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     char buf[MAX_BUF];
     int retRead = read(sfd, buf, 63);
     buf[retRead] = '\0';
-    if (strncmp(buf, "playStart", 10) == 0) 
+    if (strncmp(buf, "playStart", 10) == 0)
     {
         printf("game start\n");
         startGame(sfd, argv[1]);

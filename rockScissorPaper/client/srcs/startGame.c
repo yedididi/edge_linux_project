@@ -40,6 +40,9 @@ void mainThread(int sfd)
         read(sfd, buf, MAX_BUF);
 
         t_gameInfo *gameInfo = (t_gameInfo *)buf;
+        
+        printf("rcvd from server. gameStatus:%d, (%d, %d)\n", gameInfo->gameStatus, gameInfo->i, gameInfo->j);
+        
         if (gameInfo->gameStatus == GAMEOVER)
         {
             printEndScreen();

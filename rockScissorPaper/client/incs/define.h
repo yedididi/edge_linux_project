@@ -60,7 +60,20 @@ typedef struct s_info
 
 typedef enum e_gameStat 
 {
+    C1_WAITING, 
+    C1_RCVD,
+    C1_SEND,
+    C1_SENT,
+    C2_WAITING, 
+    C2_RCVD,
+    C2_SEND,
+    C2_SENT,
+    SEND,
+    
     GAMEOVER,
+    ENDGAME,
+    
+    //client status
     PLAYING
 } t_gameStat; 
 

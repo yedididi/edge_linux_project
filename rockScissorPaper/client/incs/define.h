@@ -17,7 +17,7 @@
 #include <linux/fb.h>
 #include <sys/mman.h>
 
-#define SERVER_IP "10.10.141.214"
+#define SERVER_IP "10.10.141.206"
 #define SERVER_PORT 25000
 #define MAX_BUF 256
 #define MAPSIZE (10 + 10) 
@@ -43,7 +43,7 @@ typedef struct s_map
     int color;
     struct fb_var_screeninfo vinfo;
     struct fb_fix_screeninfo finfo;
-    char **clientMap; //must free~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    char **clientMap;
 } t_map;
 
 typedef struct s_gameInfo

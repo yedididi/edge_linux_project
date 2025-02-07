@@ -81,14 +81,9 @@ t_gameInfo getClick(t_info *info, int touch_fd)
             // y_selected_coordinate_temp = y_selected_coordinate;
             x_selected_temp = x_selected;
             y_selected_temp = y_selected;
-            printf("x_selected_temp:%d", x_selected_temp);
-            printf("y_selected_temp:%d", y_selected_temp);
-            printf("x_before_coordinate:%d", x_before_coordinate);
-            printf("y_before_coordinate:%d", y_before_coordinate);
-            printf("x_selected_coordinate:%d", x_selected_coordinate);
-            printf("y_selected_coordinate:%d", y_selected_coordinate);
+            printf("\ninfo->map->clientMap[y_selected][x_selected]:%d\n", info->map->clientMap[y_selected][x_selected]);
             if (info->map->clientMap[y_selected][x_selected] == 0)
-               draw_target(info->map, x_selected_temp, y_selected_temp, x_before_coordinate, y_before_coordinate, x_selected_coordinate, y_selected_coordinate);
+               draw_target(info->map, x_selected_temp, y_selected_temp, x_before_coordinate, y_before_coordinate);
             printf("touched point selected, inside board\n");
          }
 

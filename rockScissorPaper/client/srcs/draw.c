@@ -109,10 +109,13 @@ void draw_button(t_map *map)
 }
 
 void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, 
-    int x_before_coordinate, int y_before_coordinate, int x_selected_coordinate, int y_selected_coordinate)
+    int x_before_coordinate, int y_before_coordinate)
 {
    int xNum[12] = {-15, -10, -15, -15, -15, -10, 5, 10, 10, 5, 10, 10};
    int yNum[12] = {-15, -15, -10, 5, 10, 10, 10, 5, 10, -15, -15, -10};
+   int x_selected_coordinate = (x_selected_temp * 45) + 220;
+   int y_selected_coordinate = (y_selected_temp * 45) + 60;
+
    if (map->clientMap[y_selected_temp][x_selected_temp] != 1)
    {
       if (x_before_coordinate == 0 && y_before_coordinate == 0)

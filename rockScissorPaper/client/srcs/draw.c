@@ -131,6 +131,7 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
          printf("before for, about to print target\n");
          for (int i = 0; i < 12; i++)
          {
+            printf("printing target:%d\n", i);
             draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
             draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
          }

@@ -113,7 +113,7 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
 {
    int xNum[12] = {-15, -10, -15, -15, -15, -10, 5, 10, 10, 5, 10, 10};
    int yNum[12] = {-15, -15, -10, 5, 10, 10, 10, 5, 10, -15, -15, -10};
-   if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
+   if (map->clientMap[y_selected_temp][x_selected_temp] != 1)
    {
       if (x_before_coordinate == 0 && y_before_coordinate == 0)
       {
@@ -135,7 +135,7 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
 
 void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selected_coordinate_temp, int y_selected_coordinate_temp)
 {
-   if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
+   if (map->clientMap[y_selected_temp][x_selected_temp] != 1)
    {
       printf("map->color:%d\n", map->color);
       

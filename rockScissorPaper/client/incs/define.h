@@ -44,6 +44,7 @@ typedef struct s_gameInfo
 {
     int i, j;
     int gameStatus;
+    int color;
 } t_gameInfo;
 
 typedef struct s_info
@@ -85,7 +86,7 @@ void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selec
 void draw_button(t_map *map);
 void draw_turn();
 
-void printRock(t_info *info, int i, int j);
+void printRock(t_info *info, int i, int j, int color);
 void printEndScreen();
 
 #endif

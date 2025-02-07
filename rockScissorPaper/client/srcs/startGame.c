@@ -63,8 +63,7 @@ void mainThread(t_info *info, int sfd)
         }
         else
         {
-            printRock(info, gameInfo->i, gameInfo->j);
-
+            printRock(info, gameInfo->i, gameInfo->j, gameInfo->color);
             if (info->turn == C1)
                 info->turn = C2;
             else if (info->turn == C2)
@@ -73,9 +72,9 @@ void mainThread(t_info *info, int sfd)
     }
 }
 
-void printRock(t_info *info, int i, int j)
+void printRock(t_info *info, int i, int j, int color)
 {
-    draw_circle((i * 45 + 220), (j * 45) + 60, 5, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    draw_circle((i * 45 + 220), (j * 45) + 60, 22, color, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
 void printEndScreen()

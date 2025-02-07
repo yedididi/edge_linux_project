@@ -146,9 +146,9 @@ void draw_turn(t_map *map)
 
 void draw_button(t_map *map)
 {
-   draw_rect(630, 280, 170, 200, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
-   draw_rect(700, 380, 100, 100, COLOR_BLUE, &(map->vinfo), &(map->finfo), map->mapNum);
-   draw_turn(map);
+   // draw_rect(630, 280, 170, 200, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
+   draw_rect(700, 380, 100, 100, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+   //draw_turn(map);
 }
 
 void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_before_coordinate, int y_before_coordinate)

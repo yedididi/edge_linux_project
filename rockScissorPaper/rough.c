@@ -521,7 +521,7 @@ int main(int argc, char **argv)
   for (;;)
   {
     
-    draw_turn();
+    //draw_turn();
     ret = read(touch_fd, &ev, sizeof(struct input_event));
     if (ret == -1)
     {

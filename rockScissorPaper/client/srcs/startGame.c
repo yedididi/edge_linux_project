@@ -88,9 +88,9 @@ void mainThread(t_info *info, int sfd)
 void printWhoseTurn(t_info *info, int whoseTurn)
 {
     if (whoseTurn == COLOR_BLACK)
-        draw_text("BLACK TURN", 640, 50, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+        draw_text("BLACK TURN", 640, 300, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
     else if (whoseTurn == COLOR_WHITE)
-        draw_text("WHITE TURN", 640, 50, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+        draw_text("WHITE TURN", 640, 300, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
 void printRock(t_info *info, int i, int j, int radius, int color)

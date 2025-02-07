@@ -273,9 +273,9 @@ void drawWhoIAm(t_info *info)
    char buf1[32];
 
    if (info->whichClient == C1)
-      sprintf(buf1, "YOURE BLACK");
+      sprintf(buf1, "I AM BLACK");
    else
-      sprintf(buf1, "YOURE WHITE");
+      sprintf(buf1, "I AM WHITE");
 
   draw_text(buf1, 640, 0, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }

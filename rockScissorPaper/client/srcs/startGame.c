@@ -5,7 +5,6 @@ void startGame(int sfd, char *dev_name)
     int whichClient = 0;
     pthread_t sendingThreadID;
     t_info *info; //dont forget to free at all exit
-    //t_map *map; //dont forget to free at all exit
 
     char buf[MAX_BUF];
     int readRet = read(sfd, buf, MAX_BUF);
@@ -46,6 +45,8 @@ t_info *fillInfo(int sfd, char *dev_name, int whichClient)
 
 void mainThread(t_info *info, int sfd)
 {
+    int whoWon = 0;
+
     for (;;)
     {
         char buf[MAX_BUF];
@@ -58,10 +59,12 @@ void mainThread(t_info *info, int sfd)
             printf("BLACK\n");
         else if (gameInfo->color == COLOR_WHITE)
             printf("WHITE\n");
+
+        whoWon = gameInfo->color;
         
         if (gameInfo->gameStatus == GAMEOVER)
         {
-            printEndScreen(info);
+            printEndScreen(info, whoWon);
             sleep(3);
             exit(0);
         }
@@ -82,11 +85,14 @@ void printRock(t_info *info, int i, int j, int color)
 }
 
 
-void printEndScreen(t_info *info)
+void printEndScreen(t_info *info, int whoWon)
 {
     draw_rect(0, 0, (info->map->vinfo).xres, (info->map->vinfo).yres, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 
     draw_rect(315, 195, 150, 95, COLOR_GOLD, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
     draw_text("GAME OVER", 320, 200, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
-    draw_text("BLACK WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    if (whoWon == COLOR_BLACK)
+        draw_text("BLACK WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    else if (whoWon == COLOR_WHITE)
+        draw_text("WHITE WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }

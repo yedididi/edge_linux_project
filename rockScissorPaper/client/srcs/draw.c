@@ -116,15 +116,19 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
    int x_selected_coordinate = (x_selected_temp * 45) + 220;
    int y_selected_coordinate = (y_selected_temp * 45) + 60;
 
-   if (map->clientMap[y_selected_temp][x_selected_temp] != 1)
+   printf("inside draw_target, before if\n");
+   if (map->clientMap[y_selected_temp][x_selected_temp] == 0)
    {
+      printf("inside if\n");
       if (x_before_coordinate == 0 && y_before_coordinate == 0)
       {
-         draw_rect(0, 0, 1, 1, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
+         printf("it is 0,0\n");
+         // draw_rect(0, 0, 1, 1, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
       }
 
       else if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
       {
+         printf("before for, about to print target\n");
          for (int i = 0; i < 12; i++)
          {
             draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);

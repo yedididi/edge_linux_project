@@ -129,6 +129,7 @@ void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screen
                int g_color = (color >> 8) & 0xff;
                int b_color = color & 0xff;
                *(unsigned short *)(map + location) = (unsigned short)(((r_color >> 3) << 11) | ((g_color >> 2) << 5) | (b_color >> 3));
+               printf("else end\n");
             }
          }
       }

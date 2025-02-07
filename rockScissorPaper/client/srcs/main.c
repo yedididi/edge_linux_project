@@ -10,9 +10,12 @@ int main(int argc, char **argv)
 
     int sfd = connectToServer();
 
+    printf("after connectToServer\n");
+
     char buf[MAX_BUF];
     int retRead = read(sfd, buf, 63);
     buf[retRead] = '\0';
+    printf("this is buf:%s\n", buf);
     if (strncmp(buf, "playStart", 10) == 0)
     {
         printf("game start\n");

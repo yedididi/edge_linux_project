@@ -45,12 +45,15 @@ t_gameInfo getClick(t_info *info, int touch_fd)
     static int y_scaled = 0;
     static int x_selected = 0;
     static int y_selected = 0;
-    static int x_selected_coordinate = 0;
-    static int y_selected_coordinate = 0;
+
+   //  static int x_selected_coordinate = 0;
+   //  static int y_selected_coordinate = 0;
+
    //  int x_selected_coordinate_temp = 0;
    //  int y_selected_coordinate_temp = 0;
-    int x_before_coordinate = 0;
-    int y_before_coordinate = 0;
+
+   //  int x_before_coordinate = 0;
+   //  int y_before_coordinate = 0;
     int x_selected_temp = 0;
     int y_selected_temp = 0;
    
@@ -68,8 +71,8 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          printf("pressed\n");
          x_selected = (x_scaled - 220) / 45;
          y_selected = (y_scaled - 60) / 45;
-         x_selected_coordinate = 220 + 45 * x_selected;
-         y_selected_coordinate = 60 + 45 * y_selected;
+         // x_selected_coordinate = 220 + 45 * x_selected;
+         // y_selected_coordinate = 60 + 45 * y_selected;
 
          // 바둑알 둘 곳 터치로 선택하기
          if (x_selected >= 0 && x_selected <= 8 && y_selected >= 0 && y_selected <= 8)
@@ -98,8 +101,8 @@ t_gameInfo getClick(t_info *info, int touch_fd)
 
       else if (ev.type == 1 && ev.code == 330 && ev.value == 1)
       {
-         x_before_coordinate = x_selected_coordinate;
-         y_before_coordinate = y_selected_coordinate;
+         // x_before_coordinate = x_selected_coordinate;
+         // y_before_coordinate = y_selected_coordinate;
       }
 
       else if (ev.type == 3 && ev.code == 0)

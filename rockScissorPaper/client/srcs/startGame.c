@@ -17,6 +17,7 @@ void startGame(int sfd, char *dev_name)
     info = fillInfo(sfd, dev_name, whichClient);
     
     draw_map(info->map);
+    draw_whoIAm(info);
     printf("[%d] creating thread\n", getpid());
     int ret = pthread_create(&sendingThreadID, NULL, &sendingThread, info);
     if(ret != 0) 
@@ -59,7 +60,7 @@ void mainThread(t_info *info, int sfd)
             printf("BLACK\n");
         else if (gameInfo->color == COLOR_WHITE)
             printf("WHITE\n");
-            
+
         if (gameInfo->gameStatus == PLAYING)
             whoWon = gameInfo->color;
         

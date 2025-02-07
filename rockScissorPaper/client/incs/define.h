@@ -115,7 +115,7 @@ void draw_number(int num, int x, int y, int scale, unsigned int color,
                  struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
                  char *map);
 
-void printRock(t_info *info, int i, int j, int color);
-void printEndScreen();
+void printRock(t_info *info, int i, int j, int radius, int color);
+void printEndScreen(t_info *info, int whoWon);
 
 #endif

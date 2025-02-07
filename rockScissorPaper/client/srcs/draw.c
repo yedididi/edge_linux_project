@@ -273,9 +273,9 @@ void drawWhoIAm(t_info *info)
    char buf1[32];
 
    if (info->whichClient == C1)
-      sprintf(buf1, "ME  BLACK");
+      sprintf(buf1, "PLAYER COLOR:BLACK");
    else
-      sprintf(buf1, "ME  WHITE");
+      sprintf(buf1, "PLAYER COLOR:WHITE");
 
   draw_text(buf1, 650, 0, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }

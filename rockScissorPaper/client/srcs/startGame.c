@@ -74,14 +74,23 @@ void mainThread(t_info *info, int sfd)
         {
             printRock(info, gameInfo->i, gameInfo->j, 22, gameInfo->color);
             printf("inbetween printRock\n");
-            printRock(info, 11, 8, 30, gameInfo->color);
-            printf("right below rock drawed\n");
+            printWhoseTurn(info, gameInfo->color);
+            // printRock(info, 11, 8, 30, gameInfo->color);
+            // printf("right below rock drawed\n");
             if (info->turn == C1)
                 info->turn = C2;
             else if (info->turn == C2)
                 info->turn = C1;
         }
     }
+}
+
+void printWhoseTurn(t_info *info, int whoseTurn)
+{
+    if (whoseTurn == COLOR_BLACK)
+        draw_text("BLACK TURN", 640, 50, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    else if (whoseTurn == COLOR_WHITE)
+        draw_text("WHITE TURN", 640, 50, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
 void printRock(t_info *info, int i, int j, int radius, int color)

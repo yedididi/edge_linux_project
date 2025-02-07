@@ -89,7 +89,6 @@ void printRock(t_info *info, int i, int j, int radius, int color)
     draw_circle((i * 45 + 220), (j * 45) + 60, radius, color, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
-
 void printEndScreen(t_info *info, int whoWon)
 {
     draw_rect(0, 0, (info->map->vinfo).xres, (info->map->vinfo).yres, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);

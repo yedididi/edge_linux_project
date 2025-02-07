@@ -106,6 +106,7 @@ void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screen
    int xx, yy;
    int location = 0;
 
+   printf("inside draw_circle\n");
    // 원을 그리기 위해 y축을 기준으로 x축을 조정
    for (yy = cy - r; yy <= cy + r; yy++)
    {
@@ -114,13 +115,16 @@ void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screen
          // 원의 방정식 (x - cx)^2 + (y - cy)^2 <= r^2
          if ((xx - cx) * (xx - cx) + (yy - cy) * (yy - cy) <= r * r)
          {
+            printf("inside for for if\n");
             location = xx * (vip->bits_per_pixel / 8) + yy * fip->line_length;
             if (vip->bits_per_pixel == 32)
             {
+               printf("inside if\n");
                *(unsigned int *)(map + location) = color;
             }
             else
             {
+               printf("inside else\n");
                int r_color = color >> 16;
                int g_color = (color >> 8) & 0xff;
                int b_color = color & 0xff;

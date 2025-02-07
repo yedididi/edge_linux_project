@@ -108,8 +108,7 @@ void draw_button(t_map *map)
    draw_turn(map);
 }
 
-void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, 
-    int x_before_coordinate, int y_before_coordinate)
+void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_before_coordinate, int y_before_coordinate)
 {
    int xNum[12] = {-15, -10, -15, -15, -15, -10, 5, 10, 10, 5, 10, 10};
    int yNum[12] = {-15, -15, -10, 5, 10, 10, 10, 5, 10, -15, -15, -10};
@@ -117,33 +116,11 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
    int y_selected_coordinate = (y_selected_temp * 45) + 60;
 
    printf("inside draw_target, before if\n");
-   // if (map->clientMap[y_selected_temp][x_selected_temp] == 0)
-   // {
-   //    printf("inside if\n");
-   //    if (x_before_coordinate == 0 && y_before_coordinate == 0)
-   //    {
-   //       printf("it is 0,0\n");
-   //       // draw_rect(0, 0, 1, 1, COLOR_BLACK, &(map->vinfo), &(map->finfo), map->mapNum);
-   //    }
-
-   //    else if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
-   //    {
-   //       printf("before for, about to print target\n");
-   //       for (int i = 0; i < 12; i++)
-   //       {
-   //          printf("printing target:%d\n", i);
-   //          draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-   //          draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-   //       }
-   //    }
-   // }
    if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
    {
-      printf("before for, about to print target\n");
       for (int i = 0; i < 12; i++)
       {
-         printf("printing target:%d\n", i);
-         if (!(x_before_coordinate == 0 && y_before_coordinate == 0))
+         if ((!(x_before_coordinate == 0 && y_before_coordinate == 0)) && map->clientMap[y_before_coordinate][x_before_coordinate] == 0)
             draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
          draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
       }

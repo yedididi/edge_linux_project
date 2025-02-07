@@ -117,5 +117,6 @@ void draw_number(int num, int x, int y, int scale, unsigned int color,
 
 void printRock(t_info *info, int i, int j, int radius, int color);
 void printEndScreen(t_info *info, int whoWon);
+void printWhoseTurn(t_info *info, int whoseTurn);
 
 #endif

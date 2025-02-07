@@ -1,5 +1,48 @@
 #include "../incs/define.h"
 
+// 영어 정의 배열열
+const int FONT_5x7[26][7] = {
+    {0b010, 0b101, 0b111, 0b101, 0b101, 0b101, 0b101}, // A
+    {0b110, 0b101, 0b110, 0b101, 0b101, 0b101, 0b110}, // B
+    {0b011, 0b100, 0b100, 0b100, 0b100, 0b100, 0b011}, // C
+    {0b110, 0b101, 0b101, 0b101, 0b101, 0b101, 0b110}, // D
+    {0b111, 0b100, 0b100, 0b110, 0b100, 0b100, 0b111}, // E
+    {0b111, 0b100, 0b100, 0b110, 0b100, 0b100, 0b100}, // F
+    {0b011, 0b100, 0b100, 0b101, 0b101, 0b101, 0b011}, // G
+    {0b101, 0b101, 0b101, 0b111, 0b101, 0b101, 0b101}, // H
+    {0b111, 0b010, 0b010, 0b010, 0b010, 0b010, 0b111}, // I
+    {0b111, 0b010, 0b010, 0b010, 0b010, 0b110, 0b100}, // J
+    {0b101, 0b101, 0b110, 0b100, 0b110, 0b101, 0b101}, // K
+    {0b100, 0b100, 0b100, 0b100, 0b100, 0b100, 0b111}, // L
+    {0b101, 0b111, 0b101, 0b101, 0b101, 0b101, 0b101}, // M
+    {0b101, 0b111, 0b111, 0b111, 0b111, 0b111, 0b101}, // N
+    {0b010, 0b101, 0b101, 0b101, 0b101, 0b101, 0b010}, // O
+    {0b110, 0b101, 0b101, 0b110, 0b100, 0b100, 0b100}, // P
+    {0b011, 0b100, 0b100, 0b101, 0b101, 0b101, 0b011}, // Q
+    {0b110, 0b101, 0b101, 0b110, 0b101, 0b101, 0b101}, // R
+    {0b011, 0b100, 0b100, 0b010, 0b001, 0b001, 0b110}, // S
+    {0b111, 0b010, 0b010, 0b010, 0b010, 0b010, 0b010}, // T
+    {0b101, 0b101, 0b101, 0b101, 0b101, 0b101, 0b011}, // U
+    {0b101, 0b101, 0b101, 0b101, 0b101, 0b010, 0b010}, // V
+    {0b101, 0b101, 0b101, 0b101, 0b111, 0b111, 0b101}, // W
+    {0b101, 0b101, 0b010, 0b010, 0b010, 0b101, 0b101}, // X
+    {0b101, 0b101, 0b101, 0b101, 0b010, 0b010, 0b010}, // Y
+    {0b111, 0b001, 0b010, 0b010, 0b100, 0b100, 0b111}, // Z
+};
+
+const int FONT_3x5[10][5] = {
+    {0b111, 0b101, 0b101, 0b101, 0b111}, // 0
+    {0b010, 0b110, 0b010, 0b010, 0b111}, // 1
+    {0b111, 0b001, 0b111, 0b100, 0b111}, // 2
+    {0b111, 0b001, 0b111, 0b001, 0b111}, // 3
+    {0b101, 0b101, 0b111, 0b001, 0b001}, // 4
+    {0b111, 0b100, 0b111, 0b001, 0b111}, // 5
+    {0b111, 0b100, 0b111, 0b101, 0b111}, // 6
+    {0b111, 0b001, 0b001, 0b010, 0b010}, // 7
+    {0b111, 0b101, 0b111, 0b101, 0b111}, // 8
+    {0b111, 0b101, 0b111, 0b001, 0b111}  // 9
+};
+
 void draw_map(t_map *map)
 {
    /* clear screen */
@@ -153,4 +196,74 @@ void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selec
       }
       printf("%d, %d\n", x_selected_temp, y_selected_temp);
    }
+}
+
+void draw_text(const char *text, int x, int y, int scale, unsigned int color,
+               struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+               char *map)
+{
+  int spacing = scale * 4; // 글자 간 간격 설정
+
+  while (*text)
+  {
+    if (*text == ' ')
+    {
+      x += spacing; // 공백일 경우 x 좌표만 이동
+    }
+    else if (*text >= 'A' && *text <= 'Z')
+    {
+      draw_letter(*text, x, y, scale, color, vip, fip, map);
+      x += spacing;
+    }
+    else if (*text >= '0' && *text <= '9')
+    {
+      draw_number(*text - '0', x, y, scale * 1.5, color, vip, fip, map);
+      x += spacing * 1.5;
+    }
+    text++;
+  }
+}
+
+
+void draw_letter(char letter, int x, int y, int scale, unsigned int color,
+                 struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+                 char *map)
+{
+  if (letter < 'A' || letter > 'Z')
+    return; // A~Z가 아닐 경우 무시
+  int index = letter - 'A';
+
+  for (int row = 0; row < 7; row++)
+  {
+    for (int col = 0; col < 3; col++)
+    {
+      if ((FONT_5x7[index][row] >> (2 - col)) & 1)
+      {
+        // 비트가 1이면 픽셀 그리기
+        draw_rect(x + col * scale, y + row * scale, scale, scale, color, vip,
+                  fip, map);
+      }
+    }
+  }
+}
+
+void draw_number(int num, int x, int y, int scale, unsigned int color,
+                 struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+                 char *map)
+{
+  if (num < 0 || num > 9)
+    return; // 숫자가 0~9 범위를 벗어나면 무시
+
+  for (int row = 0; row < 5; row++)
+  {
+    for (int col = 0; col < 3; col++)
+    {
+      if ((FONT_3x5[num][row] >> (2 - col)) & 1)
+      {
+        // 비트가 1이면 색칠
+        draw_rect(x + col * scale, y + row * scale, scale, scale, color, vip,
+                  fip, map);
+      }
+    }
+  }
 }

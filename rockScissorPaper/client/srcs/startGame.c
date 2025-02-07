@@ -61,7 +61,7 @@ void mainThread(t_info *info, int sfd)
         
         if (gameInfo->gameStatus == GAMEOVER)
         {
-            printEndScreen();
+            printEndScreen(info);
             sleep(3);
             exit(0);
         }
@@ -81,7 +81,12 @@ void printRock(t_info *info, int i, int j, int color)
     draw_circle((i * 45 + 220), (j * 45) + 60, 22, color, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
-void printEndScreen()
-{
 
+void printEndScreen(t_info *info)
+{
+    draw_rect(0, 0, (info->map->vinfo).xres, (info->map->vinfo).yres, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+
+    draw_rect(315, 195, 150, 95, COLOR_GOLD, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    draw_text("GAME OVER", 320, 200, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    draw_text("BLACK WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }

@@ -22,6 +22,7 @@
 #define MAX_BUF 256
 #define MAPSIZE (10 + 10) 
 #define FBDEV "/dev/fb0"
+
 #define COLOR_RED 0xff0000
 #define COLOR_GREEN 0x00ff00
 #define COLOR_BLUE 0x0000ff
@@ -32,6 +33,7 @@
 #define ORIGINAL_MAX 4000
 #define TARGET_WIDTH 800
 #define TARGET_HEIGHT 480
+#define COLOR_GOLD 0xFFD700
 
 typedef struct s_map
 {
@@ -102,6 +104,15 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_bef
 void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selected_coordinate_temp, int y_selected_coordinate_temp);
 void draw_button(t_map *map);
 void draw_turn();
+void draw_text(const char *text, int x, int y, int scale, unsigned int color,
+               struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+               char *map);
+void draw_letter(char letter, int x, int y, int scale, unsigned int color,
+                 struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+                 char *map);
+void draw_number(int num, int x, int y, int scale, unsigned int color,
+                 struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
+                 char *map);
 
 void printRock(t_info *info, int i, int j, int color);
 void printEndScreen();

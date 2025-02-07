@@ -54,6 +54,7 @@ t_gameInfo getClick(t_info *info, int touch_fd)
     int x_selected_temp = 0;
     int y_selected_temp = 0;
    
+   printf("inside getClick\n");
    for (;;)
    {
       int ret = read(touch_fd, &ev, sizeof(struct input_event));

@@ -118,11 +118,12 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_bef
    printf("inside draw_target, before if\n");
    if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
    {
+      printf("this is y_before_coordinate:%d x_before_coordinate:%d\n", y_before_coordinate, x_before_coordinate);
+      int newYBeforeCoor = (y_before_coordinate - 60) * 45;
+      int newXBeforeCoor = (x_before_coordinate - 220) * 45;
+      printf("this is newXBeforeCoor:%d newYBeforeCoor:%d\n", newXBeforeCoor, newYBeforeCoor);
       for (int i = 0; i < 12; i++)
       {
-         int newYBeforeCoor = (y_before_coordinate - 60) * 45;
-         int newXBeforeCoor = (x_before_coordinate - 220) * 45;
-         printf("this is newXBeforeCoor:%d newYBeforeCoor:%d\n", newXBeforeCoor, newYBeforeCoor);
          if ((!(x_before_coordinate == 0 && y_before_coordinate == 0)) && map->clientMap[newYBeforeCoor][newXBeforeCoor] == 0)
             draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
          draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);

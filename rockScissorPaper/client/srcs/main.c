@@ -14,6 +14,9 @@ int main(int argc, char **argv)
 
     char buf[MAX_BUF];
     int retRead = read(sfd, buf, MAX_BUF);
+    if (retRead < 0)
+        printf("sfd read error\n");
+    printf("retRead:%d\n", retRead);
     buf[retRead] = '\0';
     printf("this is buf:%s\n", buf);
     if (strncmp(buf, "playStart", 10) == 0)

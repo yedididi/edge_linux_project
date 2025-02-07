@@ -73,6 +73,7 @@ void mainThread(t_info *info, int sfd)
         else
         {
             printRock(info, gameInfo->i, gameInfo->j, 22, gameInfo->color);
+            printf("inbetween printRock\n");
             printRock(info, 750, 430, 30, gameInfo->color);
             if (info->turn == C1)
                 info->turn = C2;

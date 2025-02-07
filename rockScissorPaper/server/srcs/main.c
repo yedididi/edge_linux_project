@@ -44,6 +44,11 @@ int main(int argc, char **argv)
 				int newI = info[sfd_clients[0]]->gameInfo->i;
 				int newJ = info[sfd_clients[0]]->gameInfo->j;
 				int newColor = info[sfd_clients[0]]->gameInfo->color;
+				if (newI < 0 || newI > (MAPSIZE - 10) || newJ < 0 || newJ > (MAPSIZE - 10))
+				{
+					printf("wrong newI newJ\n");
+					exit(1);
+				}
 
 				info[sfd_clients[0]]->turn = C1;
 				info[sfd_clients[1]]->turn = C1;
@@ -92,7 +97,7 @@ int main(int argc, char **argv)
 
 				printf("before checkGameOver\n");
 				if (checkGameOver(map, newI, newJ) == GAMEOVER)
-					gameStatus = GAMEOVER;
+					gameStatus = C1_GAMEOVER;
 				else
 				{
 					if (info[sfd_clients[0]]->turn == C1)

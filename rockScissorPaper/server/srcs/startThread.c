@@ -18,6 +18,7 @@ void *startThread(void *info_)
             printf("[%d] playStart sent\n", info->clientfd);
             pthread_mutex_unlock(&(info->playerNumMuxtex));
 
+            sleep(1);
             if (info->whichClient == C1)
                 write(info->clientfd, "C1", 2);
             else if (info->whichClient == C2)
@@ -154,20 +155,43 @@ void omokStart(t_info *info)
                 break;
             }
 
-            case (GAMEOVER):
+            case (C1_GAMEOVER):
             {
-                printf("game status:GAMEOVER\n");
-                t_gameInfo gameInfo;
-                gameInfo.i = -100;
-                gameInfo.j = -100;
-                gameInfo.gameStatus = GAMEOVER;
-                gameInfo.color = -1;
+                if (info->whichClient == C1)
+                {
+                    printf("game status:GAMEOVER\n");
+                    t_gameInfo gameInfo;
+                    gameInfo.i = -100;
+                    gameInfo.j = -100;
+                    gameInfo.gameStatus = GAMEOVER;
+                    gameInfo.color = -1;
 
-                write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+                    write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
 
-                printf("sending gameover\n");
+                    printf("sending gameover\n");
 
-                *(info->gameStatus) = ENDGAME;
+                    *(info->gameStatus) = C2_GAMEOVER;
+                }
+                break;
+            }
+
+            case (C2_GAMEOVER):
+            {
+                if (info->whichClient == C2)
+                {
+                    printf("game status:GAMEOVER\n");
+                    t_gameInfo gameInfo;
+                    gameInfo.i = -100;
+                    gameInfo.j = -100;
+                    gameInfo.gameStatus = GAMEOVER;
+                    gameInfo.color = -1;
+
+                    write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+
+                    printf("sending gameover\n");
+
+                    *(info->gameStatus) = ENDGAME;
+                }
                 break;
             }
             

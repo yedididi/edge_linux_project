@@ -104,6 +104,7 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_bef
 void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selected_coordinate_temp, int y_selected_coordinate_temp);
 void draw_button(t_map *map);
 void draw_turn();
+void drawWhoIAm(t_info *info);
 void draw_text(const char *text, int x, int y, int scale, unsigned int color,
                struct fb_var_screeninfo *vip, struct fb_fix_screeninfo *fip,
                char *map);

@@ -17,7 +17,7 @@ void startGame(int sfd, char *dev_name)
     info = fillInfo(sfd, dev_name, whichClient);
     
     draw_map(info->map);
-    draw_whoIAm(info);
+    drawWhoIAm(info);
     printf("[%d] creating thread\n", getpid());
     int ret = pthread_create(&sendingThreadID, NULL, &sendingThread, info);
     if(ret != 0) 

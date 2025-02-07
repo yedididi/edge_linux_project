@@ -59,8 +59,9 @@ void mainThread(t_info *info, int sfd)
             printf("BLACK\n");
         else if (gameInfo->color == COLOR_WHITE)
             printf("WHITE\n");
-
-        whoWon = gameInfo->color;
+            
+        if (gameInfo->gameStatus == PLAYING)
+            whoWon = gameInfo->color;
         
         if (gameInfo->gameStatus == GAMEOVER)
         {

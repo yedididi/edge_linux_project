@@ -102,10 +102,10 @@ void printEndScreen(t_info *info, int whoWon)
 {
     draw_rect(0, 0, (info->map->vinfo).xres, (info->map->vinfo).yres, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 
-    draw_rect(315, 195, 150, 95, COLOR_GOLD, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
-    draw_text("GAME OVER", 320, 200, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    //draw_rect(315, 195, 150, 95, COLOR_GOLD, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+    draw_text("GAME OVER", 320, 200, 4, COLOR_RED, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
     if (whoWon == COLOR_BLACK)
-        draw_text("BLACK WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+        draw_text("BLACK WIN", 320, 250, 4, COLOR_RED, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
     else if (whoWon == COLOR_WHITE)
-        draw_text("WHITE WIN", 320, 250, 4, COLOR_WHITE, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
+        draw_text("WHITE WIN", 320, 250, 4, COLOR_RED, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }

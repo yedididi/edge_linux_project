@@ -17,7 +17,7 @@
 #include <linux/fb.h>
 #include <sys/mman.h>
 
-#define SERVER_IP "10.10.141.206"
+#define SERVER_IP "10.10.141.214"
 #define SERVER_PORT 25000
 #define MAX_BUF 256
 #define MAPSIZE (10 + 10) 

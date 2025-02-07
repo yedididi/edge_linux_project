@@ -119,8 +119,8 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_bef
    if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
    {
       printf("this is y_before_coordinate:%d x_before_coordinate:%d\n", y_before_coordinate, x_before_coordinate);
-      int newYBeforeCoor = (y_before_coordinate - 60) * 45;
-      int newXBeforeCoor = (x_before_coordinate - 220) * 45;
+      int newYBeforeCoor = (y_before_coordinate - 60) / 45;
+      int newXBeforeCoor = (x_before_coordinate - 220) / 45;
       printf("this is newXBeforeCoor:%d newYBeforeCoor:%d\n", newXBeforeCoor, newYBeforeCoor);
       for (int i = 0; i < 12; i++)
       {

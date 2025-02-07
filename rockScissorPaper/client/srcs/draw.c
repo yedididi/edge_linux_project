@@ -106,6 +106,12 @@ void draw_circle(int cx, int cy, int r, unsigned int color, struct fb_var_screen
    int xx, yy;
    int location = 0;
 
+   if (cx < 0 || cx > 800 || cy < 0 || cy > 480)
+   {
+      printf("cant draw circle bc out of boundary\n");
+      return ;
+   }
+
    // 원을 그리기 위해 y축을 기준으로 x축을 조정
    for (yy = cy - r; yy <= cy + r; yy++)
    {

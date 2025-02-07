@@ -78,6 +78,8 @@ typedef enum e_gameStat
     
     GAMEOVER,
     ENDGAME,
+    C1_GAMEOVER,
+    C2_GAMEOVER,
     
     //client status
     PLAYING

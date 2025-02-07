@@ -75,8 +75,6 @@ void mainThread(t_info *info, int sfd)
             printRock(info, gameInfo->i, gameInfo->j, 22, gameInfo->color);
             printf("inbetween printRock\n");
             printWhoseTurn(info, gameInfo->color);
-            // printRock(info, 11, 8, 30, gameInfo->color);
-            // printf("right below rock drawed\n");
             if (info->turn == C1)
                 info->turn = C2;
             else if (info->turn == C2)

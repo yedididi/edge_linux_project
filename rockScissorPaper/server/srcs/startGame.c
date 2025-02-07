@@ -31,9 +31,9 @@ int startGame(int sfd_server, t_info **info, int *playerNum, int *gameStatus, in
     pthread_mutex_unlock(&(info[sfd_client]->playerNumMuxtex));
 
     if (*playerNum == 1)
-        info[sfd_client]->whichClient = 1;
+        info[sfd_client]->whichClient = C1;
     else if (*playerNum == 2)
-        info[sfd_client]->whichClient = 2;
+        info[sfd_client]->whichClient = C2;
 
 
     printf("[%d] creating thread\n", getpid());

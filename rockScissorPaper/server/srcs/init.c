@@ -30,26 +30,15 @@ bool fillInfo(t_info **info, int *playerNum, int sfd_client, int *gameStatus)
     (*info)->gameInfo->i = -1;
     (*info)->gameInfo->j = -1;
     (*info)->gameInfo->gameStatus = PLAYING;
+    (*info)->gameInfo->color = COLOR_GREEN;
     return (EXIT_SUCCESS);
 }
 
-// t_info *fillGameInfo(t_info *info)
-// {
-//     info->gameInfo = (t_gameInfo *)malloc(sizeof(t_gameInfo));
-//     if (info->gameInfo == NULL)
-//         printf("malloc error\n");
-//     else
-//         printf("gameInfo malloc ok\n");
-
-//     info->gameInfo->i = -1;
-//     info->gameInfo->j = -1;
-//     info->gameInfo->gameStatus = PLAYING;
-// }
-
 void freeInfo(t_info **info)
 {
-    for (int i = 0; info[i]; i++)
+    for (int i = 0; i < 2; i++)
     {
+        printf("freeing no.%d\n", i);
         free(info[i]->gameInfo);
         free(info[i]);
     }

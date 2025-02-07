@@ -20,6 +20,8 @@ int checkGameOver(int map[MAPSIZE][MAPSIZE], int newI, int newJ)
         {
             curI += firstI[index];
             curJ += firstJ[index];
+            if (curI < 0 || curI > (MAPSIZE - 10) || curJ < 0 || curJ > (MAPSIZE - 10))
+                break;
             if (map[curI][curJ] == currentColor)
                 firstConnectedNum++;
             else
@@ -32,6 +34,8 @@ int checkGameOver(int map[MAPSIZE][MAPSIZE], int newI, int newJ)
         {
             curI += secondI[index];
             curJ += secondJ[index];
+            if (curI < 0 || curI > (MAPSIZE - 10) || curJ < 0 || curJ > (MAPSIZE - 10))
+                break;
             if (map[curI][curJ] == currentColor)
                 secondConnectedNum++;
             else

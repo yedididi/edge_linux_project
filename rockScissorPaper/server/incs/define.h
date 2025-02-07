@@ -19,18 +19,27 @@
 #define SERVER_PORT 25000
 #define LISTEN_BACKLOG 5
 #define MAX_BUF 256
-#define MAPSIZE 10
+#define MAPSIZE (10 + 10)
 #define WINNINGNUM 3 //4가 오목 
+#define COLOR_RED 0xff0000
+#define COLOR_GREEN 0x00ff00
+#define COLOR_BLUE 0x0000ff
+#define COLOR_BLACK 0x00000f
+#define COLOR_WHITE 0xffffff
+#define COLOR_BROWN 0xc68a12
 
 typedef enum e_gameStat 
 {
     C1_WAITING, 
     C1_RCVD,
+    C1_SEND,
     C1_SENT,
     C2_WAITING, 
     C2_RCVD,
+    C2_SEND,
     C2_SENT,
     SEND,
+    
     GAMEOVER,
     ENDGAME,
     
@@ -48,6 +57,7 @@ typedef struct s_gameInfo
 {
     int i, j;
     int gameStatus;
+    int color;
 } t_gameInfo;
 
 typedef struct s_info

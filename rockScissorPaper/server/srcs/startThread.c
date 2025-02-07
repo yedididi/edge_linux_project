@@ -18,9 +18,9 @@ void *startThread(void *info_)
             printf("[%d] playStart sent\n", info->clientfd);
             pthread_mutex_unlock(&(info->playerNumMuxtex));
 
-            if (info->whichClient == 1)
+            if (info->whichClient == C1)
                 write(info->clientfd, "C1", 2);
-            else if (info->whichClient == 2)
+            else if (info->whichClient == C2)
                 write(info->clientfd, "C2", 2);
 
             omokStart(info);
@@ -42,9 +42,10 @@ void omokStart(t_info *info)
         {
             case (C1_WAITING):
             {
-                printf("game status:C1_WAITING\n");
-                if (info->turn == C1)
+                //printf("game status:C1_WAITING\n");
+                if (info->whichClient == C1)
                 {
+                    printf("game status:C1_WAITING, this client is C1\n");
                     char buf[MAX_BUF];
 
                     int readRet = read(info->clientfd, buf, MAX_BUF);
@@ -61,15 +62,26 @@ void omokStart(t_info *info)
                     info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
                     info->gameInfo->i = gameInfoRCVD->i;
                     info->gameInfo->j = gameInfoRCVD->j;
+                    if (info->turn == C1)
+                    {
+                        info->gameInfo->color = COLOR_BLACK;
+                        printf("info->gameInfo->color is BLACK\n");
+                    }
+                    else if (info->turn == C2)
+                    {
+                        info->gameInfo->color = COLOR_WHITE;
+                        printf("info->gameInfo->color is WHITE\n");
+                    }
                     *(info->gameStatus) = C1_RCVD;
                 }
                 break;
             }
             case (C2_WAITING):
             {
-                printf("game status:C2_WAITING\n");
-                if (info->turn == C2)
+                //printf("game status:C2_WAITING\n");
+                if (info->whichClient == C2)
                 {
+                    printf("game status:C2_WAITING, this client is C2\n");
                     char buf[MAX_BUF];
 
                     int readRet = read(info->clientfd, buf, MAX_BUF);
@@ -86,26 +98,59 @@ void omokStart(t_info *info)
                     info->gameInfo->gameStatus = gameInfoRCVD->gameStatus;
                     info->gameInfo->i = gameInfoRCVD->i;
                     info->gameInfo->j = gameInfoRCVD->j;
+                    if (info->turn == C1)
+                    {
+                        info->gameInfo->color = COLOR_BLACK;
+                        printf("\ninfo->gameInfo->color is BLACK\n");
+                    }
+                    else if (info->turn == C2)
+                    {
+                        info->gameInfo->color = COLOR_WHITE;
+                        printf("\ninfo->gameInfo->color is WHITE\n");
+                    }
                     *(info->gameStatus) = C2_RCVD;
                 }
                 break;
             }
-            case (SEND):
+            case (C1_SEND):
             {
-                printf("game status:SEND\n");
-                t_gameInfo gameInfo;
-                gameInfo.i = info->gameInfo->i;
-                gameInfo.j = info->gameInfo->j;
-                gameInfo.gameStatus = PLAYING;
+                if (info->whichClient == C1)
+                {
+                    printf("game status:C1_SEND\n");
+                    t_gameInfo gameInfo;
+                    gameInfo.i = info->gameInfo->i;
+                    gameInfo.j = info->gameInfo->j;
+                    gameInfo.color = info->gameInfo->color;
+                    gameInfo.gameStatus = PLAYING;
 
-                write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+                    write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
 
-                printf("writing to client...this should print twice\n");
+                    printf("writing to client1\n");
 
-                if (info->turn == C1)
                     *(info->gameStatus) = C1_SENT;
-                else
+                    usleep(1000);
+                }
+                break;
+            }
+
+            case (C2_SEND):
+            {
+                if (info->whichClient == C2)
+                {
+                    printf("game status:C2_SEND\n");
+                    t_gameInfo gameInfo;
+                    gameInfo.i = info->gameInfo->i;
+                    gameInfo.j = info->gameInfo->j;
+                    gameInfo.color = info->gameInfo->color;
+                    gameInfo.gameStatus = PLAYING;
+
+                    write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
+
+                    printf("writing to client2\n");
+
                     *(info->gameStatus) = C2_SENT;
+                    usleep(1000);
+                }
                 break;
             }
 
@@ -113,18 +158,16 @@ void omokStart(t_info *info)
             {
                 printf("game status:GAMEOVER\n");
                 t_gameInfo gameInfo;
-                gameInfo.i = -1;
-                gameInfo.j = -1;
+                gameInfo.i = -100;
+                gameInfo.j = -100;
                 gameInfo.gameStatus = GAMEOVER;
+                gameInfo.color = -1;
 
                 write(info->clientfd, &gameInfo, sizeof(t_gameInfo));
 
                 printf("sending gameover\n");
 
-                if (info->turn == C1)
-                    *(info->gameStatus) = C1_SENT;
-                else
-                    *(info->gameStatus) = C2_SENT;
+                *(info->gameStatus) = ENDGAME;
                 break;
             }
             

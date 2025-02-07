@@ -120,7 +120,10 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, int x_bef
    {
       for (int i = 0; i < 12; i++)
       {
-         if ((!(x_before_coordinate == 0 && y_before_coordinate == 0)) && map->clientMap[(y_before_coordinate - 60) * 45][(x_before_coordinate - 220) * 45] == 0)
+         int newYBeforeCoor = (y_before_coordinate - 60) * 45;
+         int newXBeforeCoor = (x_before_coordinate - 220) * 45;
+         printf("this is newXBeforeCoor:%d newYBeforeCoor:%d\n", newXBeforeCoor, newYBeforeCoor);
+         if ((!(x_before_coordinate == 0 && y_before_coordinate == 0)) && map->clientMap[newYBeforeCoor][newXBeforeCoor] == 0)
             draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
          draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
       }

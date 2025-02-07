@@ -63,20 +63,19 @@ void mainThread(t_info *info, int sfd)
         }
         else
         {
-            draw_turn(info->map);
+            printRock(info, gameInfo->i, gameInfo->j);
+
             if (info->turn == C1)
                 info->turn = C2;
             else if (info->turn == C2)
                 info->turn = C1;
-            //printRock(gameInfo->i, gameInfo->j);
         }
     }
 }
 
-void printRock(int i, int j)
+void printRock(t_info *info, int i, int j)
 {
-    (void)i;
-    (void)j;
+    draw_circle((i * 45 + 220), (j * 45) + 60, 5, COLOR_BLACK, &(info->map->vinfo), &(info->map->finfo), info->map->mapNum);
 }
 
 void printEndScreen()

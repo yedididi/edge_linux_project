@@ -85,7 +85,7 @@ void add_stone(t_map *map, int x_selected_temp, int y_selected_temp, int x_selec
 void draw_button(t_map *map);
 void draw_turn();
 
-void printRock(int i, int j);
+void printRock(t_info *info, int i, int j);
 void printEndScreen();
 
 #endif

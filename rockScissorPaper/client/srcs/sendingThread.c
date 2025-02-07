@@ -38,14 +38,6 @@ t_gameInfo getClick(t_info *info, int touch_fd)
 {
     t_gameInfo gameInfo;
 
-    // 입력 장치의 좌표 범위 (160 ~ 3900)
-    const int original_min = 150;
-    const int original_max = 4000;
-
-    // 목표 해상도 (800x480)
-    const int target_width = 800;
-    const int target_height = 480;
-
     struct input_event ev;
     static int x_coordinate = 0;
     static int y_coordinate = 0;
@@ -64,15 +56,12 @@ t_gameInfo getClick(t_info *info, int touch_fd)
    
    for (;;)
    {
-      // printf("before read\n");
       int ret = read(touch_fd, &ev, sizeof(struct input_event));
       if (ret == -1)
       {
          printf("touchtest: %s (%d)\n", strerror(errno), __LINE__);
          exit(1);
       }
-
-      // printf("%d %d %d\n", ev.type, ev.code, ev.value);
 
       if (ev.type == 1 && ev.code == 330 && ev.value == 0)
       {
@@ -81,7 +70,6 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          y_selected = (y_scaled - 60) / 45;
          x_selected_coordinate = 220 + 45 * x_selected;
          y_selected_coordinate = 60 + 45 * y_selected;
-         // printf("%d, %d\n", x_selected, y_selected);
 
          // 바둑알 둘 곳 터치로 선택하기
          if (x_selected >= 0 && x_selected <= 8 && y_selected >= 0 && y_selected <= 8)
@@ -90,9 +78,8 @@ t_gameInfo getClick(t_info *info, int touch_fd)
             // y_selected_coordinate_temp = y_selected_coordinate;
             x_selected_temp = x_selected;
             y_selected_temp = y_selected;
-            printf("before draw_target\n");
-            draw_target(info->map, x_selected_temp, y_selected_temp, x_before_coordinate, y_before_coordinate, x_selected_coordinate, y_selected_coordinate);
-            printf("after draw_target\n");
+            if (info->map->clientMap[y_selected][x_selected] == 0)
+               draw_target(info->map, x_selected_temp, y_selected_temp, x_before_coordinate, y_before_coordinate, x_selected_coordinate, y_selected_coordinate);
             printf("touched point selected, inside board\n");
          }
 
@@ -102,11 +89,9 @@ t_gameInfo getClick(t_info *info, int touch_fd)
             // add_stone(info->map, x_selected_temp, y_selected_temp, x_selected_coordinate_temp, y_selected_coordinate_temp);
             printf("putting rock when pressed button\n");
             info->map->clientMap[x_selected_temp][y_selected_temp] = 1;
-            printf("after putting in info->map->clientMap[x_selected_temp][y_selected_temp]\n");
             gameInfo.i = x_selected_temp;
             gameInfo.j = y_selected_temp;
             gameInfo.gameStatus = PLAYING;
-            printf("before returning1234\n");
             return (gameInfo);
          }
       }
@@ -122,19 +107,15 @@ t_gameInfo getClick(t_info *info, int touch_fd)
          // x 위치 값
          x_coordinate = ev.value; // x 좌표 저장
          // x 좌표 축소 (비율 변환)
-         x_scaled = (x_coordinate - original_min) * target_width / (original_max - original_min);
+         x_scaled = (x_coordinate - ORIGINAL_MIN) * TARGET_WIDTH / (ORIGINAL_MAX - ORIGINAL_MIN);
       }
       else if (ev.type == 3 && ev.code == 1)
       {
          // y 위치 값
          y_coordinate = ev.value; // y 좌표 저장
          // y 좌표 축소 (비율 변환)
-         y_scaled = (y_coordinate - original_min) * target_height / (original_max - original_min);
+         y_scaled = (y_coordinate - ORIGINAL_MIN) * TARGET_HEIGHT / (ORIGINAL_MAX - ORIGINAL_MIN);
       }
    }
-
-   gameInfo.i = x_selected;
-   gameInfo.j = y_selected;
-   gameInfo.gameStatus = PLAYING;
    return (gameInfo);
 }

@@ -111,6 +111,8 @@ void draw_button(t_map *map)
 void draw_target(t_map *map, int x_selected_temp, int y_selected_temp, 
     int x_before_coordinate, int y_before_coordinate, int x_selected_coordinate, int y_selected_coordinate)
 {
+   int xNum[12] = {-15, -10, -15, -15, -15, -10, 5, 10, 10, 5, 10, 10};
+   int yNum[12] = {-15, -15, -10, 5, 10, 10, 10, 5, 10, -15, -15, -10};
    if (map->clientMap[x_selected_temp][y_selected_temp] != 1)
    {
       if (x_before_coordinate == 0 && y_before_coordinate == 0)
@@ -120,37 +122,11 @@ void draw_target(t_map *map, int x_selected_temp, int y_selected_temp,
 
       else if (x_selected_coordinate >= 220 && x_selected_coordinate <= 580 && y_selected_coordinate >= 60 && y_selected_coordinate <= 420)
       {
-         draw_rect(x_before_coordinate - 15, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate - 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate - 15, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_before_coordinate - 15, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate - 15, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate - 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_before_coordinate + 5, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate + 10, y_before_coordinate + 5, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate + 10, y_before_coordinate + 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_before_coordinate + 5, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate + 10, y_before_coordinate - 15, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_before_coordinate + 10, y_before_coordinate - 10, 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate - 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate - 15, y_selected_coordinate - 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 5, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate - 15, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate - 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_selected_coordinate + 5, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 5, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate + 10, y_selected_coordinate + 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-
-         draw_rect(x_selected_coordinate + 5, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 15, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
-         draw_rect(x_selected_coordinate + 10, y_selected_coordinate - 10, 5, 5, COLOR_RED, &(map->vinfo), &(map->finfo), map->mapNum);
+         for (int i = 0; i < 12; i++)
+         {
+            draw_rect(x_before_coordinate + xNum[i], y_before_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+            draw_rect(x_selected_coordinate + xNum[i], y_selected_coordinate + yNum[i], 5, 5, COLOR_BROWN, &(map->vinfo), &(map->finfo), map->mapNum);
+         }
       }
    }
    draw_button(map);

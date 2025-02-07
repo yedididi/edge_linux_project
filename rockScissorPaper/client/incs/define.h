@@ -28,6 +28,10 @@
 #define COLOR_BLACK 0x00000f
 #define COLOR_WHITE 0xffffff
 #define COLOR_BROWN 0xc68a12
+#define ORIGINAL_MIN 150
+#define ORIGINAL_MAX 4000
+#define TARGET_WIDTH 800
+#define TARGET_HEIGHT 480
 
 typedef struct s_map
 {

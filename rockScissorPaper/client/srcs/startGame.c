@@ -53,7 +53,11 @@ void mainThread(t_info *info, int sfd)
 
         t_gameInfo *gameInfo = (t_gameInfo *)buf;
         
-        printf("rcvd from server. gameStatus:%d, (%d, %d)\n", gameInfo->gameStatus, gameInfo->i, gameInfo->j);
+        printf("rcvd from server. gameStatus:%d, (%d, %d), ", gameInfo->gameStatus, gameInfo->i, gameInfo->j);
+        if (gameInfo->color == COLOR_BLACK)
+            printf("BLACK\n");
+        else if (gameInfo->color == COLOR_WHITE)
+            printf("WHITE\n");
         
         if (gameInfo->gameStatus == GAMEOVER)
         {

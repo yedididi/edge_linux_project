@@ -1,6 +1,6 @@
 CC = cc
 NAME = server
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 INCS = incs
 SRCS = $(wildcard srcs/*.c)
 OBJS = $(SRCS:.c=.o)
